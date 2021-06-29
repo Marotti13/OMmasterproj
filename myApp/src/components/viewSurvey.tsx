@@ -1,5 +1,5 @@
 import { IonRow, IonCol, IonCard, IonCardContent } from "@ionic/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 //import firestore
 
 
@@ -22,6 +22,9 @@ const viewSurvey: React.FC<{document: string}> = props => {
         })
     }
     //NEED USE EFFECT LOOK AT BOOKMARKS
+    useEffect(() => {
+        fetchName();
+      });
 
     return (
         <IonRow>
