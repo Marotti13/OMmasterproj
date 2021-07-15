@@ -20,7 +20,7 @@ const Tab1: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         <ExploreContainer name="Tab 1 page" />
-        <ViewSurvey document='vTbbXN0RRE1ZIbTPfgaV'/>
+        <ViewSurvey document='U7SujCPFOBTUqCuyEZsI'/>
       </IonContent>
     </IonPage>
   );
