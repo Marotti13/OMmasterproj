@@ -23,4 +23,6 @@ const firebaseConfig = {
 }).catch((error) => {
     console.log("Error getting document:", error);
 });}
-  
+
+const db=firebase.firestore();
+export default db;
