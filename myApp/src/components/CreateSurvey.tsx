@@ -31,8 +31,9 @@ const CreateSurvey: React.FC = () => {
         const enteredTitle = titleRef.current!.value; //! means this code will never run without a value being stored in side .current ref (TS doesnt know react handles it) 
         const enteredPrompt = promptRef.current!.value;
 
-    
-        if (!enteredTitle || !enteredPrompt || options.length<2){
+        let tempy = temp.map((e: any) => e.name === '' ? true : false); //check for an empty string in every element - returns array of true/false
+
+        if (!enteredTitle || !enteredPrompt || temp.length<2 || temp.includes(undefined) || tempy.includes(true)){ //if tempy array has empty string then trigger error 
           setError('You Fucked Up! Make sure Everything is entereed right');
           return;
         }
@@ -67,12 +68,13 @@ const CreateSurvey: React.FC = () => {
         titleRef.current!.value = '';
         promptRef.current!.value = '';
         setOptions([]);
+        setTemp([]);
       };
 
     const addOption = () => {
             
             setOptions([...options, ""]);
-            setTemp([...temp,null]);
+            //setTemp([...temp,null]);
 
             
       };
