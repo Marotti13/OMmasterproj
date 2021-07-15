@@ -1,4 +1,4 @@
-import { IonRow, IonCol, IonCard, IonCardContent } from "@ionic/react";
+import { IonRow, IonCol, IonCard, IonCardContent, IonLabel, IonButton, IonText, IonItem } from "@ionic/react";
 import { useEffect, useState } from "react";
 import db from '../firebaseConfig';
 
@@ -65,14 +65,21 @@ const ViewSurvey: React.FC<{document: string}> = props => {
         <IonRow>
             <IonCol>
                 <IonCard>
-                    <h2>Survey Name: {name}</h2>
-                    <h3>Prompt: {prompt}</h3>
+                    <h2>{name}</h2>
+                    <h3>{prompt}</h3>
                     {options.map((element: any, i: any) => {   
-                          
-                        return ([
-                            <h4>Option {i+1}: {element.name}</h4>,
-                            <h5 onClick={() => { handleVote(i) }}>Votes: {element.votes}</h5> //on click: call method that adds 1 to options (paramter will be id????)
-                        ]);
+                        return (
+                            <IonItem>
+                                <IonRow>
+                                    <IonCol>
+                                        <IonText><h4>{element.name}</h4></IonText>
+                                        <h5>Votes: {element.votes}</h5>
+                                        <IonButton onClick={() => { handleVote(i) }}>Vote</IonButton>
+                                    </IonCol>
+                                </IonRow>
+
+                            </IonItem>
+                        );
                     })}
                 </IonCard>
             </IonCol>
