@@ -1,4 +1,5 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import CreateSurvey from '../components/CreateSurvey';
 import ExploreContainer from '../components/ExploreContainer';
 import './Tab2.css';
 
@@ -17,6 +18,7 @@ const Tab2: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         <ExploreContainer name="Tab 2 page" />
+        <CreateSurvey></CreateSurvey>
       </IonContent>
     </IonPage>
   );

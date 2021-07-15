@@ -30,14 +30,14 @@ const ViewSurvey: React.FC<{document: string}> = props => {
             setName(doc.data()!.name);
             setPrompt(doc.data()!.prompt);
 
-            console.log(doc.data()!.options)
             let tempArray: any[] =[];
 
-            doc.data()!.options.forEach((element: any) => { //check to see if it is emtpy
-                tempArray.push(element);
-            });
-            setOptions(tempArray);
-
+            if(doc.data()!.options){ //MIGHT NEED TO LOAD THIS INTO SOMETHING SO NOT CALLING TWICE
+                doc.data()!.options.forEach((element: any) => { 
+                    tempArray.push(element);
+                });
+                setOptions(tempArray);
+            }
             
             
 
