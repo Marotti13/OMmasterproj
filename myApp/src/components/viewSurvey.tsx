@@ -27,6 +27,11 @@ const ViewSurvey: React.FC<{document: string}> = props => {
             //if empty do something 
 
             //if one thing chnage the only update that staet
+
+
+            if(!doc.exists){ //prevents an error if survey gets deleted - snapshot doesnt exist but still triggers fetch
+                return
+            }
             setName(doc.data()!.name);
             setPrompt(doc.data()!.prompt);
 
