@@ -17,6 +17,7 @@ const ViewSurvey: React.FC<{document: string}> = props => {
             votes: 0
         }
     ]);
+    const [ hasVoted, setVoted ] = useState<boolean>(false);
     
     //might just need to fetch entire survey and update as needed 
     const fetchName=async()=>{
@@ -55,10 +56,16 @@ const ViewSurvey: React.FC<{document: string}> = props => {
     }, [])
 
     const handleVote = (id:any) => {
+        if(hasVoted == true){
+            console.log("you have already voted!")
+            alert("You have already voted on this survey!")
+            return
+        }
         let newArr = [...options]; // copying the old datas array
         newArr[id].votes = newArr[id].votes+1; // update local state
 
         db.collection('surveys').doc(props.document).update({options:newArr}); //bad way to do this becasue data could be overwritten
+        setVoted(true)
     }
 
     return (

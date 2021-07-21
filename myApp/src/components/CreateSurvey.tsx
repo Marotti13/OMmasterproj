@@ -34,7 +34,7 @@ const CreateSurvey: React.FC = () => {
         let tempy = temp.map((e: any) => e.name === '' ? true : false); //check for an empty string in every element - returns array of true/false
 
         if (!enteredTitle || !enteredPrompt || temp.length<2 || temp.includes(undefined) || tempy.includes(true)){ //if tempy array has empty string then trigger error 
-          setError('You Fucked Up! Make sure Everything is entereed right');
+          setError('Please enter everything corectly');
           return;
         }
         
