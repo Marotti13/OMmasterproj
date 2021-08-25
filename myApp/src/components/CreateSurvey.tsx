@@ -21,8 +21,6 @@ const CreateSurvey: React.FC = () => {
     const promptRef = useRef<HTMLIonInputElement>(null);
 
     const [ options, setOptions ] = useState<any>([]);    
-    const [ temp, setTemp ] = useState<any>([]);    
-
 
     const [ error, setError ] = useState<string>();
 
@@ -31,19 +29,19 @@ const CreateSurvey: React.FC = () => {
         const enteredTitle = titleRef.current!.value; //! means this code will never run without a value being stored in side .current ref (TS doesnt know react handles it) 
         const enteredPrompt = promptRef.current!.value;
 
-        let tempy = temp.map((e: any) => e.name === '' ? true : false); //check for an empty string in every element - returns array of true/false
+        console.log(options);
 
-        if (!enteredTitle || !enteredPrompt || temp.length<2 || temp.includes(undefined) || tempy.includes(true)){ //if tempy array has empty string then trigger error 
+        let tempy = options.map((e: any) => e.name === '' ? true : false); //check for an empty string in every element - returns array of true/false
+
+        if (!enteredTitle || !enteredPrompt || options.length<2 || options.includes(undefined) || tempy.includes(true) || options.includes("")){ //if tempy array has empty string then trigger error 
           setError('Please enter everything corectly');
           return;
         }
-        
-        console.log(temp);
-    
+            
         var docData = {
             name: enteredTitle,
             prompt: enteredPrompt,
-            options: temp
+            options: options
             
 /*             booleanExample: true,
             numberExample: 3.14159265,
@@ -68,25 +66,27 @@ const CreateSurvey: React.FC = () => {
         titleRef.current!.value = '';
         promptRef.current!.value = '';
         setOptions([]);
-        setTemp([]);
       };
 
     const addOption = () => {
             
             setOptions([...options, ""]);
-            //setTemp([...temp,null]);
-
             
       };
 
       const updateSkill = (e: React.FormEvent<HTMLIonInputElement>, index: number) => {
-        const tempArr = [...temp];
+        const tempArr = [...options];
         const target = e.target as HTMLTextAreaElement;
-        console.log(target.value)
         tempArr[index] = obj(target.value);
-        setTemp(tempArr); ////quick fix needs help really bad
-        console.log(temp);
+        //setTemp(tempArr); ////quick fix needs help really bad
+        setOptions(tempArr);
+        console.log(options);
       };
+
+      const removeOption = (e: string) => {
+            setOptions(options.filter((item: { name: any; }) => item.name !== e));
+
+       };
 
     return (
         <React.Fragment>
@@ -96,24 +96,26 @@ const CreateSurvey: React.FC = () => {
         <IonRow>
             <IonCol>
                 <IonCard>
-                <IonItem>
-                  <IonLabel position='floating'>Title</IonLabel>
-                  <IonInput ref={titleRef}></IonInput>
-                </IonItem>
-                <IonItem>
-                  <IonLabel position='floating'>Prompt</IonLabel>
-                  <IonInput ref={promptRef}></IonInput>
-                </IonItem>
-                
-                  {options.map((element: string, i: any) => {   
-                          return ([
-                            <IonItem>
-                                <IonLabel position='floating'>Option</IonLabel>
-                                <IonInput name="name" onInput={e => updateSkill(e, i)} >{element}</IonInput>
-                            </IonItem>
-                          ]);
-                      })}
+                    <IonItem>
+                        <IonLabel position='floating'>Title</IonLabel>
+                        <IonInput ref={titleRef}></IonInput>
+                    </IonItem>
+                    <IonItem>
+                        <IonLabel position='floating'>Prompt</IonLabel>
+                        <IonInput ref={promptRef}></IonInput>
+                    </IonItem>
+                    
+                    {options.map((element: any, i: any) => {   
+                            return ([
+                                <IonItem key={i}>
+                                    <IonLabel position='floating'>Option</IonLabel>
+                                    <IonInput value={element.name} onIonInput={(e: any) => updateSkill(e,i)}></IonInput> 
+                                    <IonButton onClick={(e: any) => removeOption(element.name)}>Remove</IonButton>
+                                </IonItem>
+                            ]);
+                        })}
                 </IonCard>
+
                 <IonButton onClick={() => { addOption() }}>
                         <IonIcon slot='start' icon={add}/>
                         Add Option
