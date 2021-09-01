@@ -11,7 +11,6 @@ const firebaseConfig = {
   };
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
-
   export async function firebaseTest(){
       firebase.firestore().collection("surveys").doc("pTUVVNVzEpxp6P77kQON").get().then((doc) => {
     if (doc.exists) {

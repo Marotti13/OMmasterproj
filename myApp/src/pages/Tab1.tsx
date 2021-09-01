@@ -27,7 +27,7 @@ const Tab1: React.FC = () => {
 
   useEffect(() => {
     fetchDocs();
-}, [])
+  }, [])
   return (
     <IonPage>
       <IonHeader>
