@@ -9,6 +9,17 @@ import db from '../firebaseConfig';
 
 
 /* need to read survey information state vars might need to pass specific document into module */
+/**
+ * 
+ *  
+ * need a way to customize options and survey for admin 
+ * 
+ * by this i mean have a way to close surveys at will or to set time limits so that they close at a certain time 
+ * 
+ * DISPLAY NEEDS A COUNTDOWN FOR HOW LONG IT CAN BE UP
+ * 
+ * 
+ */
 const CreateSurvey: React.FC = () => {
 
     const obj = function(name1: any) {
