@@ -2,13 +2,15 @@ import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/rea
 import { useEffect } from 'react';
 import CreateSurvey from '../components/CreateSurvey';
 import ExploreContainer from '../components/ExploreContainer';
+import ScoreAndTicker from '../components/ScoreAndTicker';
+import TickerContainer from '../components/TickerContainer';
 import Twitter from '../components/Twitter';
 import './Tab2.css';
 
 const Tab2: React.FC = () => {
 
   return (
-    <IonPage>
+    /* <IonPage>
       <IonHeader>
         <IonToolbar>
           <IonTitle>Gameday Feed</IonTitle>
@@ -22,7 +24,10 @@ const Tab2: React.FC = () => {
         </IonHeader>
         <Twitter></Twitter>
       </IonContent>
-    </IonPage>
+    </IonPage> 
+    <ScoreAndTicker></ScoreAndTicker>*/
+    <TickerContainer></TickerContainer>
+    
   );
 };
 
