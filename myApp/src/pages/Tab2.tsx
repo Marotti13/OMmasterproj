@@ -1,13 +1,21 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { useEffect } from 'react';
+import CreateSurvey from '../components/CreateSurvey';
 import ExploreContainer from '../components/ExploreContainer';
+import ScoreAndTicker from '../components/ScoreAndTicker';
+import ScoreContainer from '../components/ScoreContainer';
+import Dynamic from '../components/TickerContainer';
+import TickerContainer from '../components/TickerContainer';
+import Twitter from '../components/Twitter';
 import './Tab2.css';
 
 const Tab2: React.FC = () => {
+
   return (
-    <IonPage>
+    /* <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Tab 2</IonTitle>
+          <IonTitle>Gameday Feed</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
@@ -16,9 +24,12 @@ const Tab2: React.FC = () => {
             <IonTitle size="large">Tab 2</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <ExploreContainer name="Tab 2 page" />
+        <Twitter></Twitter>
       </IonContent>
-    </IonPage>
+    </IonPage> 
+    <ScoreAndTicker></ScoreAndTicker>*/
+    <ScoreAndTicker></ScoreAndTicker>
+    
   );
 };
 
