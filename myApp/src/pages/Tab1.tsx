@@ -1,7 +1,7 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import ExploreContainer from '../components/ExploreContainer';
 import './Tab1.css';
-import ViewSurvey from '../components/ViewSurvey';
+import ViewSurvey from '../components/viewSurvey';
 import db from '../firebaseConfig';
 import { useEffect, useState } from 'react';
 
