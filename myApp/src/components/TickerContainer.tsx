@@ -12,6 +12,17 @@ var test2: NodeJS.Timeout | null = null; //gloal var needed so both methods have
 var labelArray:any = [];
 var dataArray:any =[];
 
+// const socket = new WebSocket('wss://ws.finnhub.io?key=sandbox_c59jrk2ad3i93kd1riug');
+// console.log('made');
+// socket.addEventListener('open', function (event) {
+//   socket.send(JSON.stringify({'type':'subscribe', 'symbol': 'AMC'}))
+  
+// });
+// socket.addEventListener('message', function (event) {
+//   console.log('Message from server ', event.data);
+// });
+
+
 
 
 
@@ -19,7 +30,7 @@ const TickerContainer: React.FC= () => {
 
   const getTicker = () => {
 
-    finnhubClient.quote("AAPL", (error: any, data: any, response: any) => {
+    finnhubClient.quote("AMC", (error: any, data: any, response: any) => {
       let tempArray = displayData.datasets[0].data;
       let tempArray2 = displayData.labels;
 
@@ -34,7 +45,7 @@ const TickerContainer: React.FC= () => {
         labels: tempArray2, 
         datasets: [
           {
-            label: 'AAPL Stock Price',
+            label: 'AMC Stock Price',
             data: tempArray,
             backgroundColor: [
               'rgba(255, 99, 132, 0.2)'
