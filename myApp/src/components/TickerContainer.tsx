@@ -1,65 +1,122 @@
-import { IonButton, IonCard, IonContent, IonItem, IonList, IonPage } from '@ionic/react';
-import { useEffect, useState } from 'react';
-import { Doughnut, Bar,Line } from 'react-chartjs-2';
+import { IonButton, IonCard, IonCol, IonContent, IonItem, IonList, IonPage, IonRow, IonText } from '@ionic/react';
+import React, { useEffect, useState } from 'react';
+import { Line } from 'react-chartjs-2';
 var Chart = require('chart.js'); 
+
+const finnhub = require('../../node_modules/finnhub'); //two node modules folder messed up
+
+const api_key = finnhub.ApiClient.instance.authentications['api_key'];
+api_key.apiKey = "c59jrk2ad3i93kd1riu0" // Replace this
+const finnhubClient = new finnhub.DefaultApi();
+var test2: NodeJS.Timeout | null = null; //gloal var needed so both methods have access
+var labelArray:any = [];
+var dataArray:any =[];
+
+
 
 
 const TickerContainer: React.FC= () => {
 
-  const rand = () => Math.round(Math.random() * 20 - 10);
+  const getTicker = () => {
 
-  const genData = () => ({
-    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], //SHIFT SHIFT 
+    finnhubClient.quote("AAPL", (error: any, data: any, response: any) => {
+      let tempArray = displayData.datasets[0].data;
+      let tempArray2 = displayData.labels;
+
+      tempArray.push(data.c.toFixed(2));
+      tempArray2.push(new Date().getSeconds().toString() + 's');
+      if(tempArray.length > 10){
+        tempArray.shift();
+        tempArray2.shift();
+      }
+      
+      setData({
+        labels: tempArray2, 
+        datasets: [
+          {
+            label: 'AAPL Stock Price',
+            data: tempArray,
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.2)'
+            ],
+             borderColor: [
+               'rgba(255, 99, 132, 1)'
+             ],
+            borderWidth: 1,
+          },
+        ],
+      });
+    });
+  }
+
+  const stopGetTicker = () => {
+    clearInterval(test2!);
+  }
+  
+
+  const genData = {
+    labels: labelArray,
     datasets: [
       {
-        label: 'Scale',
-        data: [rand(), rand(), rand(), rand(), rand(), rand()],
+        label: 'AAPL Stock Price',
+        data: dataArray,
         backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
+        'rgba(255, 99, 132, 0.2)',
         ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)',
-        ],
+         borderColor: [
+           'rgba(255, 99, 132, 1)',
+         ],
         borderWidth: 1,
       },
     ],
-  });
+  };
   
   const options = {
-    scales: {
-      yAxes: [
-        {
-          ticks: {
-            beginAtZero: true,
-          },
-        },
-      ],
+    animation: {
+      duration: 0
     },
+    scales :{
+      y: {
+        grid: {
+          display: true,
+          drawBorder: true,
+          drawOnChartArea: true,
+          drawTicks: true,
+          color: '#FFFFFF'
+        },
+        ticks: {
+          // Include a dollar sign in the ticks
+          callback: function(value: any, index: any, values: any) {
+              return '$' + value.toFixed(2);
+          }
+        }
+      },
+    }
+      
+    
   };
   
 
-    const [data, setData] = useState(genData());
+    const [displayData, setData] = useState(genData);
+    
   
     useEffect(() => {
-      const interval = setInterval(() => setData(genData()), 5000); //the setData method is called every 5 seconds 
+      test2 = setInterval(() => getTicker(), 4000);
   
-      return () => clearInterval(interval);
+      return () => clearInterval(test2!);
     }, []);
+
+    
   
     return (
-      <IonPage>
-        <Line data={data} options={options} />
-      </IonPage>
+      <React.Fragment>
+        <Line data={displayData} options={options} />
+        <IonRow>
+          <IonCol class="ion-text-center">
+            <IonText >Current Price: {displayData.datasets[0].data[displayData.datasets[0].data.length -1]}</IonText>
+          </IonCol>
+        </IonRow>
+      </React.Fragment>
     );
 
 
