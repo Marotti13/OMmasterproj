@@ -32,7 +32,12 @@ import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 
 /* Theme variables */
-import './theme/variables.css';
+//import './theme/variables.css';
+import './theme/variablesCopy.css'
+/**
+ * 
+ * going to make a style sheet for every team and import it based on selection
+ */
 
 const App: React.FC = () => (
   <IonApp>
