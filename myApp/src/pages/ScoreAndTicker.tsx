@@ -1,4 +1,4 @@
-import { IonAlert, IonCol, IonContent, IonGrid, IonHeader, IonLabel, IonPage, IonRow, IonSegment, IonSegmentButton, IonTitle, IonToolbar } from "@ionic/react";
+import { IonAlert, IonCol, IonContent, IonGrid, IonHeader, IonImg, IonLabel, IonPage, IonRow, IonSegment, IonSegmentButton, IonTitle, IonToolbar } from "@ionic/react";
 import { useEffect, useState } from "react";
 import ScoreContainer from "../components/ScoreContainer";
 import TickerContainer from "../components/TickerContainer";

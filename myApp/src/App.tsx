@@ -70,6 +70,10 @@ const App: React.FC = () => (
             <IonIcon icon={square} />
             <IonLabel>Test</IonLabel>
           </IonTabButton>
+          <IonTabButton tab="tab4" href="/tab3"> {/**kkthis is wring ish take closer look */}
+            <IonIcon icon={ellipse} />
+            <IonLabel>New</IonLabel>
+          </IonTabButton>
         </IonTabBar>
       </IonTabs>
     </IonReactRouter>

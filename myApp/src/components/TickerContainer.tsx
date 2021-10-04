@@ -1,4 +1,4 @@
-import { IonButton, IonCard, IonCol, IonContent, IonItem, IonList, IonPage, IonRow, IonText } from '@ionic/react';
+import { IonButton, IonCard, IonCol, IonContent, IonImg, IonItem, IonList, IonPage, IonRow, IonSelectPopover, IonText } from '@ionic/react';
 import React, { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 var Chart = require('chart.js'); 
@@ -109,7 +109,7 @@ const TickerContainer: React.FC= () => {
   
 
     const [displayData, setData] = useState(genData);
-    
+
   
     useEffect(() => {
       test2 = setInterval(() => getTicker(), 4000);
@@ -135,5 +135,3 @@ const TickerContainer: React.FC= () => {
 };
   
   export default TickerContainer;
-
-  
