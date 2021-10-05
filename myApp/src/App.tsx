@@ -32,8 +32,8 @@ import '@ionic/react/css/flex-utils.css';
 import '@ionic/react/css/display.css';
 
 /* Theme variables */
-//import './theme/variables.css';
-import './theme/variablesCopy.css'
+import './theme/variablesState.css'
+
 /**
  * 
  * going to make a style sheet for every team and import it based on selection
@@ -60,19 +60,19 @@ const App: React.FC = () => (
         <IonTabBar slot="bottom">
           <IonTabButton tab="tab1" href="/tab1">
             <IonIcon icon={triangle} />
-            <IonLabel>View</IonLabel>
+            <IonLabel>Survey</IonLabel>
           </IonTabButton>
           <IonTabButton tab="tab2" href="/tab2">
             <IonIcon icon={flame} />
-            <IonLabel>Create</IonLabel>
+            <IonLabel>Live</IonLabel>
           </IonTabButton>
           <IonTabButton tab="tab3" href="/tab3">
             <IonIcon icon={square} />
-            <IonLabel>Test</IonLabel>
+            <IonLabel>BMI</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="tab4" href="/tab3"> {/**kkthis is wring ish take closer look */}
+          <IonTabButton tab="tab4" href="/tab4"> {/**kkthis is wring ish take closer look */}
             <IonIcon icon={ellipse} />
-            <IonLabel>New</IonLabel>
+            <IonLabel>Nothing</IonLabel>
           </IonTabButton>
         </IonTabBar>
       </IonTabs>

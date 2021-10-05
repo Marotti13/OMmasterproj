@@ -5,13 +5,13 @@ http://ionicframework.com/docs/theming/ */
 
 :root {
   /** primary **/
-  --ion-color-primary: #660000; /*ios lite mode uses this*/
+  --ion-color-primary: #3880ff;
   --ion-color-primary-rgb: 56, 128, 255;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
   --ion-color-primary-shade: #3171e0;
-  --ion-color-primary-tint: #75787B; /*ios hover/tap? color when i mouse over */
- 
+  --ion-color-primary-tint: #4c8dff;
+
   /** secondary **/
   --ion-color-secondary: #3dc2ff;
   --ion-color-secondary-rgb: 61, 194, 255;
@@ -75,9 +75,27 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-light-contrast-rgb: 0, 0, 0;
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
+}
 
+.X7gvLvqlWirQ4TiDZdzo { 
+    /** Ole Miss **/
+    --ion-color-primary: #CE1126; /*ios lite mode uses this*/
+    --ion-color-primary-tint: #006BA6; /*ios hover/tap? color when i mouse over */
+    --ion-color-step-350: #CE1126; /*slidey thing in light mode had to make this manually*/
+}
+
+.State {
+  --ion-color-primary: #660000; /*ios lite mode uses this*/
+  --ion-color-primary-tint: #75787B; /*ios hover/tap? color when i mouse over */
   --ion-color-step-350: #75787B; /*slidey thing in light mode had to make this manually*/
 }
+
+.iCB5jERBwuTqGzbu2Hfv {
+  --ion-color-primary: #FA4616; /*ios lite mode uses this*/
+  --ion-color-primary-tint: #0021A5; /*ios hover/tap? color when i mouse over */
+  --ion-color-step-350: #FA4616; /*slidey thing in light mode had to make this manually*/
+}
+
 
 @media (prefers-color-scheme: dark) {
   /*
@@ -85,13 +103,13 @@ http://ionicframework.com/docs/theming/ */
    * -------------------------------------------
    */
 
-  body {
-    --ion-color-primary: #660000; /*ios dark mode */
+   body {
+    --ion-color-primary: #428cff;
     --ion-color-primary-rgb: 66,140,255;
     --ion-color-primary-contrast: #ffffff;
     --ion-color-primary-contrast-rgb: 255,255,255;
     --ion-color-primary-shade: #3a7be0;
-    --ion-color-primary-tint: #75787B; /*ios hover/press color */
+    --ion-color-primary-tint: #5598ff;
 
     --ion-color-secondary: #50c8ff;
     --ion-color-secondary-rgb: 80,200,255;
@@ -168,7 +186,7 @@ http://ionicframework.com/docs/theming/ */
     --ion-color-step-200: #333333;
     --ion-color-step-250: #404040;
     --ion-color-step-300: #4d4d4d;
-    --ion-color-step-350: #660000;  /* this is the slidy bars for iphone */
+    --ion-color-step-350: #595959;
     --ion-color-step-400: #666666;
     --ion-color-step-450: #737373;
     --ion-color-step-500: #808080;

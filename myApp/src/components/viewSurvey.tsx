@@ -76,7 +76,7 @@ const ViewSurvey: React.FC<{document: string}> = props => {
                     <h3>{prompt}</h3>
                     {options.map((element: any, i: any) => {   
                         return (
-                            <IonItem>
+                            <IonItem key={i}>
                                 <IonRow>
                                     <IonCol>
                                         <IonText><h4>{element.name}</h4></IonText>
