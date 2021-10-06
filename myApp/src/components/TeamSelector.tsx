@@ -1,4 +1,4 @@
-import { IonItem, IonLabel, IonSelect, IonSelectOption, IonText, IonTitle } from "@ionic/react"
+import { IonCard, IonCol, IonContent, IonGrid, IonItem, IonLabel, IonPage, IonRow, IonSelect, IonSelectOption, IonText, IonTitle } from "@ionic/react"
 import db from "../firebaseConfig";
 import { useEffect, useState } from "react";
 
@@ -76,20 +76,33 @@ const TeamSelector: React.FC<{
   },[])
 
   return (
-    <IonItem>
-      <IonLabel>Events</IonLabel>
-      <IonSelect value={'test value'} placeholder="Select Team" onIonChange={e=>props.onSelection(e.detail.value)}>
-        {/* <IonSelectOption value='Ole'>Ole Miss</IonSelectOption>
-        <IonSelectOption value='State'>Miss. State</IonSelectOption>
-        <IonSelectOption value='Florida'>Florida</IonSelectOption> */}
-        {events.map((event: myEvent) => { 
-          return (<><IonSelectOption key={event.homeTeamID} value={event.homeTeamID}>{event.homeTeamName}</IonSelectOption>
-                    <IonSelectOption key={event.visitorTeamID} value={event.visitorTeamID}>{event.visitorTeamName}</IonSelectOption></>);
-        })}
-      </IonSelect>
-    </IonItem>
+    <IonPage>
+      <IonContent>
+          <IonCard>
+              <IonItem>
+                <IonLabel>Events</IonLabel>
+                <IonSelect value={'test value'} placeholder="Select Team" onIonChange={e=>props.onSelection(e.detail.value)}>
+                  {events.map((event: myEvent) => { 
+                    return (<><IonSelectOption key={event.homeTeamID} value={event.homeTeamID}>{event.homeTeamName}</IonSelectOption>
+                              <IonSelectOption key={event.visitorTeamID} value={event.visitorTeamID}>{event.visitorTeamName}</IonSelectOption></>);
+                  })}
+                </IonSelect>
+              </IonItem>
+          </IonCard>
+      </IonContent>
+    </IonPage>
+    
   );
 
 };
 
 export default TeamSelector;
+
+/**
+ * events title
+ * 
+ * card for each event 
+ *  select one of two teams to select
+ * 
+ * 
+ */

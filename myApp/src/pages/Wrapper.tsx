@@ -7,7 +7,7 @@ import { useState } from 'react';
 
 import React from 'react';
 import App from '../App';
-import { IonButton, IonPage } from '@ionic/react';
+import { IonButton, IonContent, IonPage } from '@ionic/react';
 import TeamSelector from '../components/TeamSelector';
 
 const Wrapper: React.FC = () => {
@@ -20,10 +20,8 @@ const Wrapper: React.FC = () => {
   }
 
   return(
-    <IonPage>
-      {team != '' ? <App/>: <TeamSelector onSelection={handleSelection}></TeamSelector>}
-    </IonPage>
-    );
+    <>{team != '' ? <App/>: <TeamSelector onSelection={handleSelection}></TeamSelector>}</>
+  );
 };
 
 export default Wrapper;
