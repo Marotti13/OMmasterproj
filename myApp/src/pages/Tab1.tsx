@@ -6,12 +6,14 @@ import db from '../firebaseConfig';
 import { useEffect, useState } from 'react';
 
 
-const Tab1: React.FC = () => {
+const Tab1: React.FC<{
+    team:string; 
+  }> = props => {
   const [ documents, setDocuments ] = useState<any>([]);
 
 
   const fetchDocs=async()=>{
-    db.collection("surveys")
+    db.collection("teams").doc(props.team).collection('surveys')
         .onSnapshot((e) => {
 
           let tempArrray: string[] = [];
@@ -42,7 +44,7 @@ const Tab1: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         {documents.map((element: string) => { 
-         return (<ViewSurvey key={element} document={element}/>);
+         return (<ViewSurvey key={element} document={element} team={props.team}/>);
         })}
       </IonContent>
     </IonPage>

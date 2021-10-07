@@ -13,6 +13,8 @@ import TeamSelector from '../components/TeamSelector';
 const Wrapper: React.FC = () => {
 
   const [ team, setTeam ] = useState<string>(''); //need to export team to other containers
+  const [ event, setEvent ] = useState<string>(''); //need exact event possibly? will just be event id. containers will subscribe to data 
+
 
   const handleSelection = (selection:string) => {
     document.body.classList.toggle(selection);
@@ -20,7 +22,7 @@ const Wrapper: React.FC = () => {
   }
 
   return(
-    <>{team != '' ? <App/>: <TeamSelector onSelection={handleSelection}></TeamSelector>}</>
+    <>{team != '' ? <App team={team}/>: <TeamSelector onSelection={handleSelection}></TeamSelector>}</>
   );
 };
 

@@ -33,28 +33,28 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variablesState.css'
+import Twitter from './components/Twitter';
 
-/**
- * 
- * going to make a style sheet for every team and import it based on selection
- */
 
-const App: React.FC = () => (
+const App: React.FC<{
+  team:string; //this is a prop it gets from the wrapper when a team is selcted
+  //should i pass event as well?? i think this is passing team doc id 
+}> = props => (
   <IonApp>
     <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet>
           <Route exact path="/tab1">
-            <Tab1 />
+            <Tab1 team ={props.team}/>
           </Route>
-          <Route exact path="/tab2"> {/**this can be whatever i want, doesnt have to be tab 2. Just letting future me know  */}
-            <ScoreAndTicker />
+          <Route exact path="/tab2"> 
+            <ScoreAndTicker team={props.team}/>
           </Route>
-          <Route path="/tab3">
+          <Route exact path="/tab3">
             <Tab3 />
           </Route>
-          <Route exact path="/">
-            <Redirect to="/tab1" />
+          <Route exact path="/tab4">
+            <Twitter team = {props.team}/>
           </Route>
         </IonRouterOutlet>
         <IonTabBar slot="bottom">
@@ -72,7 +72,7 @@ const App: React.FC = () => (
           </IonTabButton>
           <IonTabButton tab="tab4" href="/tab4"> {/**kkthis is wring ish take closer look */}
             <IonIcon icon={ellipse} />
-            <IonLabel>Nothing</IonLabel>
+            <IonLabel>Twitter</IonLabel>
           </IonTabButton>
         </IonTabBar>
       </IonTabs>

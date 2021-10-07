@@ -5,7 +5,9 @@ import TickerContainer from "../components/TickerContainer";
 
 
 
-const ScoreAndTicker: React.FC= () => {
+const ScoreAndTicker: React.FC<{
+  team:string;
+}> = props => {
 
 
   const [ select, setSelect ] = useState<string>('score');
@@ -17,7 +19,6 @@ const ScoreAndTicker: React.FC= () => {
 }
   
   useEffect(() => {
-
   }, [])
 
 

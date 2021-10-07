@@ -2,12 +2,23 @@ import { IonRow, IonCol, IonCard, IonCardContent, IonLabel, IonButton, IonText, 
 import { useEffect, useState } from "react";
 import db from '../firebaseConfig';
 
-
-
-
+type Survey = {
+    title: string;
+    question: string;
+    options: Option[];
+    votes: Number; //might put this in spereate thing
+}
+type Option = {
+    name: string;
+    votes: number;
+}
 
 /* need to read survey information state vars might need to pass specific document into module */
-const ViewSurvey: React.FC<{document: string}> = props => {
+const ViewSurvey: React.FC<{document: string, team: string}> = props => {
+
+    //this is the new one 
+    const [ survey, setSurvey ] = useState<Survey>();
+
 
     const [ name, setName ] = useState<string>();
     const [ prompt, setPrompt ] = useState<string>();
@@ -19,10 +30,11 @@ const ViewSurvey: React.FC<{document: string}> = props => {
     ]);
     const [ hasVoted, setVoted ] = useState<boolean>(false);
     
-    //might just need to fetch entire survey and update as needed 
-    const fetchName=async()=>{
+    //grab document from prop -> subscribe to it se it to state with survey Type  -- might need to update code to reflect this
+    const fetchSurvey=async()=>{
 
-        db.collection("surveys").doc(props.document)
+        //db.collection("surveys").doc(props.document)
+        db.collection("teams").doc(props.team).collection('surveys').doc(props.document)
         .onSnapshot((doc) => {
 
             //if empty do something 
@@ -52,7 +64,7 @@ const ViewSurvey: React.FC<{document: string}> = props => {
     }
     //NEED USE EFFECT to run the method
     useEffect(() => {
-        fetchName();
+        fetchSurvey();
     }, [])
 
     const handleVote = (id:any) => {
@@ -80,7 +92,7 @@ const ViewSurvey: React.FC<{document: string}> = props => {
                                 <IonRow>
                                     <IonCol>
                                         <IonText><h4>{element.name}</h4></IonText>
-                                        <h5>Votes: {element.votes}</h5>
+                                        {/* <h5>Votes: {element.votes}</h5> */}
                                         <IonButton onClick={() => { handleVote(i) }}>Vote</IonButton>
                                     </IonCol>
                                 </IonRow>

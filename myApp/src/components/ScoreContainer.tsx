@@ -88,8 +88,8 @@ const ScoreContainer: React.FC= () => {
      .onSnapshot((doc) => {
 
       if(!doc.exists){ //prevents an error if survey gets deleted - snapshot doesnt exist but still triggers fetch
-        return
-    }
+        console.log("does not exist");
+      }
        console.log(doc.data()!.homeTeam);
        setEvent(doc.data()); //this could not work but we will see and its prob not secure
 
