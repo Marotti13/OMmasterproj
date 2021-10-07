@@ -2,8 +2,8 @@ import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/rea
 import { useEffect } from 'react';
 import CreateSurvey from '../components/CreateSurvey';
 import ExploreContainer from '../components/ExploreContainer';
-import ScoreAndTicker from '../components/ScoreAndTicker';
-import ScoreContainer from '../components/ScoreContainer';
+//import ScoreAndTicker from './ScoreAndTicker';
+//import ScoreContainer from '../components/ScoreContainer';
 import Dynamic from '../components/TickerContainer';
 import TickerContainer from '../components/TickerContainer';
 import Twitter from '../components/Twitter';
@@ -27,8 +27,9 @@ const Tab2: React.FC = () => {
         <Twitter></Twitter>
       </IonContent>
     </IonPage> 
-    <ScoreAndTicker></ScoreAndTicker>*/
     <ScoreAndTicker></ScoreAndTicker>
+    <ScoreAndTicker></ScoreAndTicker>*/
+    <div></div>
     
   );
 };

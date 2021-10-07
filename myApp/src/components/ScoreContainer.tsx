@@ -1,4 +1,4 @@
-import { IonAvatar, IonCard, IonCol, IonContent, IonGrid, IonHeader, IonImg, IonItem, IonItemDivider, IonPage, IonRow, IonText, IonTitle, IonToolbar } from "@ionic/react";
+import { IonCard, IonCol, IonHeader, IonImg, IonRow, IonText, } from "@ionic/react";
 import { useEffect, useState } from "react";
 import './ScoreAndTicker.css';
 import db from '../firebaseConfig';

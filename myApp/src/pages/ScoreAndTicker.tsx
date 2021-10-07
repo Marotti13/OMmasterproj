@@ -1,8 +1,7 @@
-import { IonAlert, IonCol, IonContent, IonGrid, IonHeader, IonLabel, IonPage, IonRow, IonSegment, IonSegmentButton, IonTitle, IonToolbar } from "@ionic/react";
+import { IonAlert, IonCol, IonContent, IonGrid, IonHeader, IonImg, IonLabel, IonPage, IonRow, IonSegment, IonSegmentButton, IonTitle, IonToolbar } from "@ionic/react";
 import { useEffect, useState } from "react";
-import InputControls from "./InputControls";
-import ScoreContainer from "./ScoreContainer";
-import TickerContainer from "./TickerContainer";
+import ScoreContainer from "../components/ScoreContainer";
+import TickerContainer from "../components/TickerContainer";
 
 
 
@@ -30,6 +29,11 @@ const ScoreAndTicker: React.FC= () => {
           </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
+      <IonHeader collapse="condense">
+          <IonToolbar>
+            <IonTitle size="large">Score and Ticker</IonTitle>
+          </IonToolbar>
+        </IonHeader>
         <IonGrid>
           <IonRow>
             <IonCol>

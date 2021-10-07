@@ -1,6 +1,6 @@
 {
-  "short_name": "Test React App",
-  "name": "Test React App",
+  "short_name": "Score Buddy",
+  "name": "Score Buddy",
   "icons": [
     {
       "src": "assets/icon/favicon.png",
