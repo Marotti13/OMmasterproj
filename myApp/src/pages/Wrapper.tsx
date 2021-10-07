@@ -12,7 +12,7 @@ import TeamSelector from '../components/TeamSelector';
 
 const Wrapper: React.FC = () => {
 
-  const [ team, setTeam ] = useState<string>('');
+  const [ team, setTeam ] = useState<string>(''); //need to export team to other containers
 
   const handleSelection = (selection:string) => {
     document.body.classList.toggle(selection);
