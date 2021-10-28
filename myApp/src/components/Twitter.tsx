@@ -14,7 +14,7 @@ const Twitter: React.FC<{
   const [ feeds, setFeeds ] = useState<any>([]);
   const [ stateDataSouce, setStateDataSource ] = useState<any>({
     sourceType: 'profile',
-    screenName: 'CNNPolitics'
+    screenName: 'CNN'
   });
 
 
@@ -66,7 +66,6 @@ const Twitter: React.FC<{
   const handleSelection = (e: any) => {
     let value = e.detail.value;
     let feedSelection = feeds.find((x: { name: string; }) => x.name === value); //searches feeds for matching name and gets data 
-    console.log(feedSelection);
 
     if(feedSelection.type === 'list') {
       let dataSource ={
@@ -95,7 +94,6 @@ const Twitter: React.FC<{
   
   useEffect(() => {
     fetchDocs();
-    console.log(props.team); //testing--------------
   }, [])
   
   

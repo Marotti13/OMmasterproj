@@ -1,6 +1,7 @@
 import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
+  IonBadge,
   IonIcon,
   IonLabel,
   IonRouterOutlet,
@@ -34,33 +35,55 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variablesState.css'
 import Twitter from './components/Twitter';
+import { type } from 'os';
+import { useState } from 'react';
 
 
 const App: React.FC<{
   team:string; //this is a prop it gets from the wrapper when a team is selcted
-  //should i pass event as well?? i think this is passing team doc id 
-}> = props => (
+  //should i pass event as well?? i think this is passing team doc id
+  event:string; 
+}> = props => {
+
+  const [ badge, setBadge ] = useState<boolean>(false);
+  
+  const handleType = (type:string) => { //sets the badge -> need to have survey page load first so snapshot starts
+    console.log(type+' was loaded ');
+    setBadge(true)
+  }
+  const clearBadge = (tab:string) => {
+    if(badge && tab=='tab1'){
+      console.log('badge cleared');
+      setBadge(false);
+    }
+  }
+  
+  return(
   <IonApp>
     <IonReactRouter>
-      <IonTabs>
+      <IonTabs onIonTabsDidChange={e=>clearBadge(e.detail.tab)}>
         <IonRouterOutlet>
-          <Route exact path="/tab1">
-            <Tab1 team ={props.team}/>
+          <Route exact path="/" >
+            <Redirect to="/tab1"/>
+          </Route>
+          <Route exact path="/tab1" >
+            <Tab1 team ={props.team} handleType={handleType}/>
           </Route>
           <Route exact path="/tab2"> 
-            <ScoreAndTicker team={props.team}/>
+            <ScoreAndTicker event={props.event}/>
           </Route>
           <Route exact path="/tab3">
             <Tab3 />
           </Route>
           <Route exact path="/tab4">
-            <Twitter team = {props.team}/>
+            <Twitter team = {props.team} />
           </Route>
         </IonRouterOutlet>
         <IonTabBar slot="bottom">
           <IonTabButton tab="tab1" href="/tab1">
             <IonIcon icon={triangle} />
             <IonLabel>Survey</IonLabel>
+            {badge? <IonBadge class='badge'>1</IonBadge>:null}
           </IonTabButton>
           <IonTabButton tab="tab2" href="/tab2">
             <IonIcon icon={flame} />
@@ -70,7 +93,7 @@ const App: React.FC<{
             <IonIcon icon={square} />
             <IonLabel>BMI</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="tab4" href="/tab4"> {/**kkthis is wring ish take closer look */}
+          <IonTabButton tab="tab4" href="/tab4"> 
             <IonIcon icon={ellipse} />
             <IonLabel>Twitter</IonLabel>
           </IonTabButton>
@@ -78,6 +101,7 @@ const App: React.FC<{
       </IonTabs>
     </IonReactRouter>
   </IonApp>
-);
+  );
+};
 
 export default App;

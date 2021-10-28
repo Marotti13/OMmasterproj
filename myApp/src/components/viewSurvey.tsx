@@ -1,4 +1,4 @@
-import { IonRow, IonCol, IonCard, IonCardContent, IonLabel, IonButton, IonText, IonItem } from "@ionic/react";
+import { IonRow, IonCol, IonCard, IonCardContent, IonLabel, IonButton, IonText, IonItem, IonAlert } from "@ionic/react";
 import { useEffect, useState } from "react";
 import db from '../firebaseConfig';
 
@@ -6,7 +6,6 @@ type Survey = {
     title: string;
     question: string;
     options: Option[];
-    votes: Number; //might put this in spereate thing
 }
 type Option = {
     name: string;
@@ -45,19 +44,18 @@ const ViewSurvey: React.FC<{document: string, team: string}> = props => {
             if(!doc.exists){ //prevents an error if survey gets deleted - snapshot doesnt exist but still triggers fetch
                 return
             }
-            setName(doc.data()!.name);
-            setPrompt(doc.data()!.prompt);
+            let options:Option[] = [];
+            doc.data()!.options.map((option:any) => {
+                options.push(option);
+            });
+            
 
-            let tempArray: any[] =[];
-
-            if(doc.data()!.options){ //MIGHT NEED TO LOAD THIS INTO SOMETHING SO NOT CALLING TWICE
-                doc.data()!.options.forEach((element: any) => { 
-                    tempArray.push(element);
-                });
-                setOptions(tempArray);
+            let survey:Survey = {
+                title: doc.data()!.title,
+                question: doc.data()!.question,
+                options: options
             }
-            
-            
+            setSurvey(survey);
 
         });
         //unsubscribe?
@@ -67,16 +65,20 @@ const ViewSurvey: React.FC<{document: string, team: string}> = props => {
         fetchSurvey();
     }, [])
 
-    const handleVote = (id:any) => {
-        if(hasVoted == true){
-            console.log("you have already voted!")
-            alert("You have already voted on this survey!")
+    const handleVote = (index:number) => {
+        if(hasVoted == true){//can fix this with login
+            console.log("You have already voted on this survey!");
+            alert("You have already voted on this survey!");//ion alert in html that can be done inthe future
             return
         }
-        let newArr = [...options]; // copying the old datas array
-        newArr[id].votes = newArr[id].votes+1; // update local state
 
-        db.collection('surveys').doc(props.document).update({options:newArr}); //bad way to do this becasue data could be overwritten
+        let tempOptions = survey!.options;
+        tempOptions[index].votes = tempOptions[index].votes + 1; //smallest instance i can update is the options array as a whole
+
+        db.collection("teams").doc(props.team).collection('surveys').doc(props.document).update({
+            options:tempOptions
+        });//bad way to do this becasue data could be overwritten
+
         setVoted(true)
     }
 
@@ -84,20 +86,21 @@ const ViewSurvey: React.FC<{document: string, team: string}> = props => {
         <IonRow>
             <IonCol>
                 <IonCard>
-                    <h2>{name}</h2>
-                    <h3>{prompt}</h3>
-                    {options.map((element: any, i: any) => {   
+                {/* <IonAlert message='You have already voted on this survey!' isOpen={true}></IonAlert> */}
+                    <IonText>
+                    <h2>{survey?.title}</h2>
+                    <h3>{survey?.question}</h3>
+                    </IonText>
+                    {survey?.options.map((option: Option, index:number) => {   
                         return (
-                            <IonItem key={i}>
-                                <IonRow>
+                                <IonRow key={index}>
                                     <IonCol>
-                                        <IonText><h4>{element.name}</h4></IonText>
+                                        <IonText><h4>{option.name}</h4></IonText>
                                         {/* <h5>Votes: {element.votes}</h5> */}
-                                        <IonButton onClick={() => { handleVote(i) }}>Vote</IonButton>
+                                        <IonText>{index}</IonText>
+                                        <IonButton onClick={() => { handleVote(index) }}>Vote</IonButton>
                                     </IonCol>
                                 </IonRow>
-
-                            </IonItem>
                         );
                     })}
                 </IonCard>

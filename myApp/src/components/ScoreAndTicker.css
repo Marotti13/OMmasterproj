@@ -1,16 +1,25 @@
 .qb {
-    max-width: 50%;
-    height: auto;
-    margin-left: 10%;
+    justify-content: center;
+    padding-left: 25%;
+    display: flex;
+    
 }
 .qb1 {
-    max-width: 50%;
-    height: auto;
-    float: right;
-    margin-right: 10%;
+    justify-content: center;  
+    padding-right: 25%;  
+    display: flex; 
+
 }
 
-p {
-    margin-top: 0px;
-    padding-top: 0px;
+.dateTime {
+    justify-content: center; 
+}
+
+.score {
+    justify-content: center;
+}
+
+.nameRecord{
+    justify-content: center;
+    display: flex; 
 }

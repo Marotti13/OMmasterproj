@@ -15,10 +15,11 @@ type myEvent = {
   homeTeamID: string;
   visitorTeamName: string;
   visitorTeamID: string;
+  id: string;
 }
 
 const TeamSelector: React.FC<{
-  onSelection: (selection:string) => void;
+  onSelection: (team:string,event:string) => void;
 }> = props => {
 
   const [ events, addEvents ] = useState<myEvent[]>([]);
@@ -52,7 +53,8 @@ const TeamSelector: React.FC<{
                 homeTeamName: ht,
                 homeTeamID: htID,
                 visitorTeamName: vt,
-                visitorTeamID: team.id
+                visitorTeamID: team.id,
+                id: doc.id
               }
       
               console.log(event);
@@ -91,9 +93,9 @@ const TeamSelector: React.FC<{
             <IonCard key={event.homeTeamID}> {/** need to get unique key*/}
               <IonItem>
                 <IonLabel>{event.visitorTeamName + ' vs ' + event.homeTeamName}</IonLabel>
-                <IonSelect value={'test value'} placeholder="Select Team" onIonChange={e=>props.onSelection(e.detail.value)}>
+                <IonSelect placeholder="Select Team" onIonChange={e=>props.onSelection(e.detail.value, event.id)}>
+                <IonSelectOption key={event.visitorTeamID} value={event.visitorTeamID}>{event.visitorTeamName}</IonSelectOption>
                   <IonSelectOption key={event.homeTeamID} value={event.homeTeamID}>{event.homeTeamName}</IonSelectOption>
-                  <IonSelectOption key={event.visitorTeamID} value={event.visitorTeamID}>{event.visitorTeamName}</IonSelectOption>
                 </IonSelect>
               </IonItem>
             </IonCard>

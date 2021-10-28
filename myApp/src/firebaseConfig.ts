@@ -8,20 +8,12 @@ const firebaseConfig = {
     messagingSenderId: "793700872338",
     appId: "1:793700872338:web:127b2d91f67da1c0c5b64b",
     measurementId: "G-RH6JTFPYBB"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  export async function firebaseTest(){
-      firebase.firestore().collection("surveys").doc("pTUVVNVzEpxp6P77kQON").get().then((doc) => {
-    if (doc.exists) {
-        console.log("Document data:", doc.data());
-    } else {
-        // doc.data() will be undefined in this case
-        console.log("No such document!");
-    }
-}).catch((error) => {
-    console.log("Error getting document:", error);
-});}
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
 
 const db=firebase.firestore();
+
+firebase.auth().signInWithEmailAndPassword('temp@temp.edu','temp123');
 export default db;

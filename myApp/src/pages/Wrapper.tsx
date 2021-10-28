@@ -16,13 +16,16 @@ const Wrapper: React.FC = () => {
   const [ event, setEvent ] = useState<string>(''); //need exact event possibly? will just be event id. containers will subscribe to data 
 
 
-  const handleSelection = (selection:string) => {
-    document.body.classList.toggle(selection);
-    setTeam(selection);
+  const handleSelection = (team:string, event:string) => {
+    console.log("team "+team);
+    document.body.classList.toggle(team);
+    setTeam(team);
+    setEvent(event);
+    //need to set event and pass it from selection
   }
 
   return(
-    <>{team != '' ? <App team={team}/>: <TeamSelector onSelection={handleSelection}></TeamSelector>}</>
+    <>{team && event != '' ? <App event={event} team={team}/>: <TeamSelector onSelection={handleSelection}></TeamSelector>}</>
   );
 };
 
