@@ -109,7 +109,7 @@ const TwitterAdmin: React.FC = () => {
           } 
       });
     })
-    .catch(err => {
+    .catch((err: any) => {
         console.log('Error getting documents', err);
     });
     return exists; //does not already exist and can add new instance
