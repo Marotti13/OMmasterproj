@@ -1,24 +1,39 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { useState } from 'react';
+import Twitter from '../components/Twitter';
 import TwitterAdmin from '../components/TwitterAdmin';
 import './Tab1.css';
 
-const Tab1: React.FC = () => {
+const Tab1: React.FC<{
+  team:string; 
+}> = props => {
+
+  const [ state, toggleState ] = useState<"admin" | 'user'>('admin'); //published vs unpublished
+
+  const toggle = () =>{
+    if(state=='admin'){
+      toggleState("user");
+    }else{
+      toggleState('admin');
+    }
+
+  }
+
   return (
     <IonPage>
       <IonHeader>
-        {/* in every header have a publish/unpublish toggle that migrates app as it stands between temp place and live place and updates event select */}
         <IonToolbar>
           <IonTitle>Tab 1</IonTitle>
+          <IonButton color='warning' slot="end" onClick={toggle}>toggle</IonButton>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonHeader collapse="condense">
+        {/* <IonHeader collapse="condense">
           <IonToolbar>
             <IonTitle size="large">Tab 1</IonTitle>
           </IonToolbar>
-        </IonHeader>
-        <TwitterAdmin></TwitterAdmin>
-        {/* button to toggle show view or not  */}
+        </IonHeader> */}
+        {state == 'admin' ? <TwitterAdmin team={props.team}/>:<Twitter team={props.team}/>}
       </IonContent>
     </IonPage>
   );

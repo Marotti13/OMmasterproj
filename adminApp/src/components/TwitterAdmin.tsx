@@ -1,14 +1,33 @@
 import db from '../firebaseConfig';
-import { useEffect, useState } from 'react';
-import { IonButton, IonContent, IonPage, useIonAlert } from '@ionic/react';
+import firebase from 'firebase';
+import React, { useEffect, useState } from 'react';
+import { IonButton, IonContent, IonItem, IonLabel, IonList, IonListHeader, IonPage, useIonAlert } from '@ionic/react';
 
 
-const TwitterAdmin: React.FC = () => {
+const TwitterAdmin: React.FC<{
+  team:string; 
+}> = props => {
 
-  /**
-   * need to figure out where i am going to put this component - needs to be on admin app
-   */
+
+  const [ feeds, setFeeds ] = useState<any>([]);
   const [present] = useIonAlert();
+
+  const fetchDocs=async()=>{
+    //db.collection("feeds") --------this is a chnage have not tested
+    db.collection("teams").doc(props.team).collection('feeds')
+        .onSnapshot((e) => {
+
+          let tempArrray: firebase.firestore.DocumentData[] = [];
+
+          e.docs.map(doc => {
+            console.log(doc);
+            //do something on first iteration, check to make sure if its populated
+            tempArrray.push(doc);
+          });
+          setFeeds(tempArrray);
+          });
+        
+  }
 
   const handleType = (type: string) => {
 
@@ -60,7 +79,7 @@ const TwitterAdmin: React.FC = () => {
   }
 
   const submitFeed = (object: any) => {
-    db.collection("feeds").doc().set(object).then(() => {
+    db.collection("teams").doc(props.team).collection('feeds').doc().set(object).then(() => {
       console.log("Document successfully written!");
     });
     //do something if error 
@@ -88,7 +107,7 @@ const TwitterAdmin: React.FC = () => {
 
     let exists = false; //HAS TO ITERATE THROUGH EVERY INSTANCE SO NOT OPTIMAL - WORST AND BEST CASE RUNTIME ARE THE SAME NEED TO FIX
 
-    await db.collection('feeds').get().then(snapshot => {
+    await db.collection("teams").doc(props.team).collection('feeds').get().then(snapshot => {
       snapshot.forEach(doc => {
           if(object.type === 'list'){
             if(object.slug === doc.data().slug && object.ownerScreenName === doc.data().ownerScreenName){
@@ -165,10 +184,52 @@ const TwitterAdmin: React.FC = () => {
     }
     
   }
+
+  const deleteFeed = (docID: any) => {
+    // db.collection("cities").doc("DC").delete().then(() => {
+    //   console.log("Document successfully deleted!");
+    //   }).catch((error) => {
+    //       console.error("Error removing document: ", error);
+    //   });
+    present({
+      cssClass: 'my-css',
+      header: 'Are Your Sure?',
+      message: 'Deleting a feed is a permanent action.',
+      buttons: [
+        'Cancel',
+        { text: 'Delete', handler: (d) => {
+           db.collection("teams").doc(props.team).collection('feeds').doc(docID).delete().then(() => {
+              console.log("Document successfully deleted!");
+              }).catch((error) => {
+                  console.error("Error removing document: ", error);
+            });
+        }},
+      ],
+      //onDidDismiss: (e) => checkExists(d),
+    })
+    console.log(docID);
+  }
+
+  useEffect(() => {
+    fetchDocs();
+  }, [])
   
 
   return(
-    
+        <React.Fragment>
+           {/* TO DO: LIST OF FEEDS HERE-> ABLE TO DELETE THEM WITH BUTTON */}
+           <IonList>
+             <IonListHeader>Current Feeds</IonListHeader>
+              {feeds.map((element: any) => {
+                return (
+                  <IonItem key={element.data().name}>
+                    <IonLabel>{element.data().name}</IonLabel>
+                    <IonButton onClick={e =>deleteFeed(element.id)} color='danger'>X</IonButton>
+                  </IonItem>
+                );
+              })}
+
+            </IonList>
           <IonButton size='small' shape="round"
             expand="block"
             onClick={() =>
@@ -192,6 +253,7 @@ const TwitterAdmin: React.FC = () => {
           >
             Add Feed
           </IonButton>
+        </React.Fragment>
   );
 
 };
