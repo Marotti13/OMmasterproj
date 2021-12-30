@@ -1,4 +1,4 @@
-import db from "../firebaseConfig";
+import {db} from "../firebaseConfig";
 import { useEffect, useState } from "react";
 import { IonButton, useIonAlert } from "@ionic/react";
 import { error } from "console";

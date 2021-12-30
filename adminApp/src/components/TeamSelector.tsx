@@ -1,5 +1,5 @@
-import { IonButton, IonCard, IonCol, IonContent, IonGrid, IonImg, IonItem, IonLabel, IonPage, IonRow, IonSelect, IonSelectOption, IonSelectPopover, IonSpinner, IonText, IonTitle} from "@ionic/react"
-import db from "../firebaseConfig";
+import { IonButton, IonCard, IonCol, IonContent, IonGrid, IonImg, IonItem, IonLabel, IonPage, IonRow, IonSelect, IonSelectOption, IonSelectPopover, IonSpinner, IonText, IonTitle, useIonAlert} from "@ionic/react"
+import {db} from "../firebaseConfig";
 import { useEffect, useState } from "react";
 import './TeamSelector.css'
 import PublishEvent from "./PublishEvent";
@@ -22,12 +22,16 @@ type myEvent = {
 const TeamSelector: React.FC<{
   onSelection: (team:string,event:string) => void;
   handleNewEvent: ()=> void;
+  handleNewParty: ()=>void;
+  handleEditParty:()=>void;
 }> = props => {
 
   const [ events, addEvents ] = useState<myEvent[]>([]);
   const [ tempEvents, addTempEvents ] = useState<myEvent[]>([]); //this will make it easier lol
 
   const [ loading, setLoading ] = useState<boolean>(true);
+  const [present] = useIonAlert();
+
   
 
   /**
@@ -111,14 +115,34 @@ const TeamSelector: React.FC<{
 
             })
           })
-        }catch{
+        }catch(Error){
           //eh nothing to see
-          console.log('yo');
+          console.log(Error);
         }
 
       });
 
     });
+  }
+
+  const deleteEvent = (docID:string) => {
+    present({
+      cssClass: 'my-css',
+      header: 'Are Your Sure?',
+      message: 'Deleting an event is a permanent action.',
+      buttons: [
+        'Cancel',
+        { text: 'Delete', handler: (d) => {
+          db.collection("temp").doc(docID).delete().then(() => {
+              console.log("Document successfully deleted!");
+              }).catch((error) => {
+                  console.error("Error removing document: ", error);
+            });
+        }},
+      ],
+      //onDidDismiss: (e) => checkExists(d),
+    })
+    console.log(docID);
   }
   
   useEffect(() => {
@@ -134,19 +158,18 @@ const TeamSelector: React.FC<{
         </IonText>
         <IonImg class='logo' src='https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/American_football.svg/1024px-American_football.svg.png'></IonImg>
         <IonButton onClick={() => props.handleNewEvent()}>Add Event</IonButton>
-        <IonButton >Add Party</IonButton>
-        <IonButton >Edit Party</IonButton>
+        <IonButton onClick={() => props.handleNewParty()}>Add Party</IonButton>
+        <IonButton onClick={() => props.handleEditParty()}>Edit Party</IonButton>
         { 
          events.map((event: myEvent) => { 
           return (
             <IonCard key={event.homeTeamID}> {/** need to get unique key*/}
               <IonItem>
-                <IonLabel>{event.visitorTeamName + ' vs ' + event.homeTeamName}</IonLabel>
+                <IonLabel class="ion-text-wrap">{event.visitorTeamName + ' vs ' + event.homeTeamName}</IonLabel>
                 <IonSelect placeholder="Select Team" onIonChange={e=>props.onSelection(e.detail.value, event.id)}>
                 <IonSelectOption key={event.visitorTeamID} value={event.visitorTeamID}>{event.visitorTeamName}</IonSelectOption>
                   <IonSelectOption key={event.homeTeamID} value={event.homeTeamID}>{event.homeTeamName}</IonSelectOption>
                 </IonSelect>
-                <IonButton>Edit</IonButton>
                 <PublishEvent id ={event.id} state={"published"} ></PublishEvent>
               </IonItem>
             </IonCard>
@@ -157,16 +180,24 @@ const TeamSelector: React.FC<{
           return (
             <IonCard key={event.visitorTeamID}> {/** need to get unique key*/}
               <IonItem>
-                <IonLabel>{event.visitorTeamName + ' vs ' + event.homeTeamName}</IonLabel>
+                <IonLabel class="ion-text-wrap">{event.visitorTeamName + ' vs ' + event.homeTeamName}</IonLabel>
                 <IonSelect placeholder="Select Team" onIonChange={e=>props.onSelection(e.detail.value, event.id)}>
                 <IonSelectOption key={event.visitorTeamID} value={event.visitorTeamID}>{event.visitorTeamName}</IonSelectOption>
                   <IonSelectOption key={event.homeTeamID} value={event.homeTeamID}>{event.homeTeamName}</IonSelectOption>
                 </IonSelect>
+                <IonButton>Edit</IonButton>
+                <IonButton color='danger' onClick={e=>deleteEvent(event.id)}>Delete</IonButton>
                 <PublishEvent id ={event.id} state={"unpublished"} ></PublishEvent>
               </IonItem>
             </IonCard>
           );
         })}
+        {/* 
+          TO DOOOOOOOO
+          have another section for expired events that can be saved? and put back in the temp->live cycle that live evetns have 
+        
+        
+        */}
       </IonContent>
     </IonPage>
     
@@ -175,12 +206,3 @@ const TeamSelector: React.FC<{
 };
 
 export default TeamSelector;
-
-/**
- * events title
- * 
- * card for each event 
- *  select one of two teams to select
- * 
- * 
- */

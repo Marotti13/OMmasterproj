@@ -14,6 +14,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 const db=firebase.firestore();
+const store = firebase.storage();
 
 firebase.auth().signInWithEmailAndPassword('temp@temp.edu','temp123');
-export default db;
+export{ db,store};

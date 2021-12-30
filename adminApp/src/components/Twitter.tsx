@@ -1,6 +1,6 @@
 import { IonContent, IonHeader, IonItem, IonLabel, IonPage, IonSelect, IonSelectOption, IonTitle, IonToolbar } from '@ionic/react';
 import { Timeline } from 'react-twitter-widgets'
-import db from '../firebaseConfig';
+import {db} from '../firebaseConfig';
 import React, { useEffect, useState } from 'react';
 import firebase from 'firebase';
 
