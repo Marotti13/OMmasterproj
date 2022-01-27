@@ -53,7 +53,7 @@ const App: React.FC<{
             <Tab1 team={props.team} />
           </Route>
           <Route exact path="/tab2">
-            <Tab2 />
+            <Tab2 team={props.team}/>
           </Route>
           <Route exact path="/tab3">
             <Tab3 />
