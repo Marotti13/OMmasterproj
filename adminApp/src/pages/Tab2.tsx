@@ -112,7 +112,7 @@ const Tab2: React.FC<{
             
             if survey display percentage of options 
             */}
-            {docs.map((e: any,i:number)=>{ console.log(JSON.stringify(e));
+            {docs.map((e: any,i:number)=>{ 
                 return(
                 <IonItem>
                   
@@ -269,13 +269,15 @@ const EditInter: React.FC<{
     type:'',
     question:'',
     optionArray:[],
-    answer:null
+    answer:null,
+    id:''
   });
 
   const [interSurvey, setInterSurvey] = useState<any>({
     type:'',
     question:'',
-    optionArray:[{name:'',votes:''}]
+    optionArray:[{name:'',votes:0}],
+    id:''
   });
 
   const [humanCheck, setHumanCheck] = useState<boolean>(false);
@@ -286,17 +288,32 @@ const EditInter: React.FC<{
 
     //check type and set state accordingly chekc type to see which state 
     if(docs[index].type =='trivia'){
+      setInterSurvey({
+        type:'',
+        question:'',
+        optionArray:[{name:'',votes:''}],
+        id:''
+      });
       setInter({
         type:docs[index].type,
         question:docs[index].question,
         optionArray:docs[index].options,
-        answer:docs[index].answer
+        answer:docs[index].answer,
+        id:docs[index].id
       });
     }else if(docs[index].type =='survey'){
+      setInter({
+        type:'',
+        question:'',
+        optionArray:[],
+        answer:null,
+        id:''
+      });
       setInterSurvey({
         type:docs[index].type,
         question:docs[index].question,
-        optionArray:docs[index].options
+        optionArray:docs[index].options,
+        id:docs[index].id
       });
     }
 
@@ -312,7 +329,8 @@ const EditInter: React.FC<{
         type:inter.type,
         question:text,
         optionArray:inter.optionArray,
-        answer:inter.answer
+        answer:inter.answer,
+        id:inter.id
       });
       
     }else if(!humanCheck){
@@ -327,7 +345,8 @@ const EditInter: React.FC<{
         type:inter.type,
         question:inter.question,
         optionArray:inter.optionArray,
-        answer:ans
+        answer:ans,
+        id:inter.id
       });
       
     }else if(!humanCheck){
@@ -342,19 +361,15 @@ const EditInter: React.FC<{
       type:inter.type,
       question:inter.question,
       optionArray:tempArray,
-      answer:inter.answer
+      answer:inter.answer,
+      id:inter.id
     });
     console.log(index + " " + optionString);
   }
 
   const handleAddOption = ()=>{
     let tempArr = inter.optionArray;
-    if(inter.type =='survey'){
-      tempArr.push({
-        name:'',
-        votes:0
-      })
-    }else if(inter.type =='trivia'){
+    if(inter.type =='trivia'){
       tempArr.push("");
     }
     
@@ -362,7 +377,8 @@ const EditInter: React.FC<{
       type:inter.type,
       question:inter.question,
       optionArray:tempArr,
-      answer:inter.answer
+      answer:inter.answer,
+      id:inter.id
     });
   }
   
@@ -373,43 +389,93 @@ const EditInter: React.FC<{
       type:inter.type,
       question:inter.question,
       optionArray:tempArray,
-      answer:inter.answer
+      answer:inter.answer,
+      id:inter.id
     });
   }
 
-  const handleSubmitTrivia = () =>{ //might check for which type and then call another method later
+  const handleSubmitTrivia = () =>{ 
     if(inter.type){
       let triviaObject = {
         answer:inter.answer,
-        optionArray:inter.optionArray,
+        options:inter.optionArray,
         question:inter.question,
         type:inter.type
       };
       console.log(JSON.stringify(triviaObject));
+      console.log('id: ' +inter.id);
+      db.collection('teams').doc(team).collection('interactive').doc(inter.id).update(triviaObject);
+    }
+    onDismiss();
+  }
+
+//////////////////////////////////
+
+  const handleSetQuestionSurvey = (text:any) =>{
+    if(humanCheck){ //might be problem later lol
+      console.log("question chnaged " + text);
+      setInterSurvey({
+        type:interSurvey.type,
+        question:text,
+        optionArray: interSurvey.optionArray,
+        id:interSurvey.id
+      });
+      
+    }else if(!humanCheck){
+    }
+  }
+
+  const handleAddOptionSurvey = ()=>{
+    let tempArr = interSurvey.optionArray;
+    if(interSurvey.type =='survey'){
+      tempArr.push({name:"",votes:0});////check later if needs to be empty string or not
     }
     
-      
-      //submit(triviaObject);
-      
-    // }
-    // else if(type=='survey'){
+    setInterSurvey({
+      type:interSurvey.type,
+      question:interSurvey.question,
+      optionArray:tempArr,
+      id:interSurvey.id
+    });
+  }
 
-    //   let surveyOps = optionArray.map((op:any) => {return({
-    //     name:op,
-    //     votes: 0
-    //   })});
+  const handleSetName = (index:number,optionString:any)=>{
+    let tempArray = interSurvey.optionArray;
+    tempArray[index].name = optionString;
+  
+    setInterSurvey({
+      type:interSurvey.type,
+      question:interSurvey.question,
+      optionArray:tempArray,
+      id:interSurvey.id
+    });
+    console.log(index + " " + interSurvey.optionArray[index].name);
+  }
 
-    //   let surveyObject = {
-    //     complete:false,
-    //     options:surveyOps,
-    //     question:question,
-    //     type:"survey"
-    //   }
-    //   console.log(JSON.stringify(surveyObject));
-    //   //submit(surveyObject);
-
-    // }
+  const handleSubmitSurvey = () =>{ 
+    if(interSurvey.type == 'survey'){
+      let surveyObject = {
+        options:interSurvey.optionArray,
+        question:interSurvey.question,
+        type:interSurvey.type
+      };
+      console.log(JSON.stringify(surveyObject));
+      console.log('id: ' +interSurvey.id);
+      db.collection('teams').doc(team).collection('interactive').doc(interSurvey.id).update(surveyObject);
+    }
+    
     onDismiss();
+  }
+
+  const handleRemoveOptionSurvey = (index:number)=>{
+    let tempArray = interSurvey.optionArray;
+    tempArray.splice(index,1);
+    setInterSurvey({
+      type:interSurvey.type,
+      question:interSurvey.question,
+      optionArray:tempArray,
+      id:interSurvey.id
+    });
   }
   
 
@@ -440,7 +506,31 @@ const EditInter: React.FC<{
               
             </IonSelect>
       </IonItem>
-      {interSurvey.type=='survey'?console.log('yesh'):console.log("nope")}
+      {interSurvey.type=='survey'?
+      
+      <div>
+      <IonItem>
+        <IonLabel>Question</IonLabel>
+        <IonInput onIonChange={e=>handleSetQuestionSurvey(e.detail.value)} value={interSurvey.question}></IonInput>
+      </IonItem>
+      <IonItem>
+        <IonLabel>Number of Options: {interSurvey.question==''?0:interSurvey.optionArray.length}</IonLabel>
+        {interSurvey.question==''?null:<IonButton onClick={e=>handleAddOptionSurvey()}>Add</IonButton>}
+      </IonItem>
+      {interSurvey.optionArray.map((op:any, index: number) => {
+        return(
+      <IonItem key={index}>
+        <IonInput onIonChange={e=>handleSetName(index,e.detail.value)} value={op.name} ></IonInput>
+        <IonInput value={op.votes} ></IonInput>
+        <IonButton onClick={e=>{handleRemoveOptionSurvey(index)}}>Remove</IonButton>
+      </IonItem>)})}
+      <IonButton expand="block" onClick={e=>handleSubmitSurvey()}>
+      Submit
+    </IonButton>
+    </div>
+      
+      
+      :<div>
       <IonItem>
         <IonLabel>Question</IonLabel>
         <IonInput value={inter.question} onIonChange={e=>handleSetQuestion(e.detail.value)}></IonInput>
@@ -465,7 +555,7 @@ const EditInter: React.FC<{
     </IonRadioGroup> 
     <IonButton expand="block" onClick={e=>handleSubmitTrivia()}>
       Submit
-    </IonButton>
+    </IonButton></div>}
     <IonButton expand="block" onClick={() => onDismiss()}>
       Close
     </IonButton>
