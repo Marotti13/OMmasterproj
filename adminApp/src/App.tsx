@@ -56,7 +56,7 @@ const App: React.FC<{
             <Tab2 team={props.team}/>
           </Route>
           <Route exact path="/tab3">
-            <Tab3 />
+            <Tab3 team={props.team}/>
           </Route>
           <Route exact path="/">
             <Redirect to="/tab1" />
