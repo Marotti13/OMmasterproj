@@ -1,6 +1,6 @@
 import { IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import { useState } from 'react';
-import Map from '../components/Map';
+import { useEffect, useState } from 'react';
+import GoogleMap from '../components/Map';
 import MapAdmin from '../components/MapAdmin';
 import './Tab3.css';
 
@@ -8,16 +8,18 @@ const Tab3: React.FC<{
   team:string;
 }> = props => {
 
-const [ state, toggleState ] = useState<"admin" | 'user'>('admin'); //published vs unpublished
+  const [ state, toggleState ] = useState<"admin" | 'user'>('admin'); //published vs unpublished
+  
 
-const toggle = () =>{
-  if(state=='admin'){
-    toggleState("user");
-  }else{
-    toggleState('admin');
+  const toggle = () =>{
+    if(state=='admin'){
+      toggleState("user");
+    }else{
+      toggleState('admin');
+    }
+
   }
 
-}
   return (
     <IonPage>
       <IonHeader>
@@ -28,7 +30,7 @@ const toggle = () =>{
       </IonHeader>
       <IonContent fullscreen>
 
-        {state == 'admin' ? <MapAdmin team={props.team}/>:<Map team={props.team}/>}
+        {state == 'admin' ? <MapAdmin team={props.team}/>:<GoogleMap team={props.team}></GoogleMap>}
 
       </IonContent>
     </IonPage>
