@@ -26,7 +26,7 @@ export class MapContainer extends Component<{google: any, team:string}>{
 
    componentDidMount = ()=>{
        if(this.state.test == ''){    //makes it so this doesnt run more than once (only need one listener)
-        db.collection('teams').doc(this.props.team).collection('maps').doc('lEfRsnwp5voZmCXfOAv7').onSnapshot(snapshot=>{
+        db.collection('teams').doc(this.props.team).collection('maps').doc('control').onSnapshot(snapshot=>{
                 let data = snapshot.data();
                 if(data)
                 this.setState({

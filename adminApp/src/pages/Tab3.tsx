@@ -24,7 +24,7 @@ const Tab3: React.FC<{
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Tab 3</IonTitle>
+          <IonTitle>Map</IonTitle>
           <IonButton color='warning' slot="end" onClick={toggle}>toggle</IonButton>
         </IonToolbar>
       </IonHeader>
