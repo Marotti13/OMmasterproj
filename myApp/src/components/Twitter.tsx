@@ -3,6 +3,7 @@ import { Timeline } from 'react-twitter-widgets'
 import db from '../firebaseConfig';
 import React, { useEffect, useState } from 'react';
 import firebase from 'firebase';
+import { Socket } from 'net';
 
 const Twitter: React.FC<{
     team:string; 
@@ -88,7 +89,6 @@ const Twitter: React.FC<{
       console.log("error");
       return;
     }
-   
 
   } 
   
@@ -99,6 +99,11 @@ const Twitter: React.FC<{
   
   return( 
     <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>Twitter</IonTitle>
+        </IonToolbar>
+      </IonHeader>
       <IonHeader>
         {/* <IonToolbar> */}
           <IonItem>
@@ -116,8 +121,8 @@ const Twitter: React.FC<{
         <Timeline
           dataSource={stateDataSouce}
           options={{
-            //theme: "light",
-            chrome: "noheader, transparent",
+            theme:"dark",
+            chrome: "noheader",
             conversation: "all"
           }} />
       </IonContent>

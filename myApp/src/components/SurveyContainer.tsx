@@ -124,9 +124,20 @@ const SurveyContainer: React.FC<{
         <React.Fragment>
             {hasVoted ? 
             <React.Fragment>
+
+                <IonCard>
+                <IonCardHeader>
+                    <IonCardSubtitle>Thank You!</IonCardSubtitle>
+                    <IonCardTitle>You Have Already Answered</IonCardTitle>
+                </IonCardHeader>
+                <IonCardContent>
+                        Check back later for more surveys and trivia!
+                </IonCardContent>
+                </IonCard>
+            
                 <IonCard>
                     <IonCardHeader>
-                        <IonCardSubtitle>Survey</IonCardSubtitle>
+                        <IonCardSubtitle>Survey Results</IonCardSubtitle>
                         <IonCardTitle>{survey?.question}</IonCardTitle>
                     </IonCardHeader>
                     <IonCardContent>
@@ -136,19 +147,22 @@ const SurveyContainer: React.FC<{
             </React.Fragment>
             
             :
-            <IonList>
-                        <IonListHeader>
-                            <IonLabel><h2><b>{survey?.question}</b></h2></IonLabel>
-                        </IonListHeader>
-                        {survey?.options.map((element:Option,index:number) =>{
-                            return(
-                                <IonItem key={index}>
-                                    <IonLabel>{element.name}</IonLabel>
-                                    <IonButton slot='end' onClick={e=>{handleVote(index)}}>Vote</IonButton>
-                                </IonItem>
-                            );
-                        })}
-            </IonList>
+            <IonCard>
+                <IonCardHeader>
+                    <IonCardSubtitle>Survey</IonCardSubtitle>
+                    <IonCardTitle>{survey?.question}</IonCardTitle>
+                </IonCardHeader>
+                <IonList>
+                            {survey?.options.map((element:Option,index:number) =>{
+                                return(
+                                    <IonItem key={index}>
+                                        <IonLabel>{element.name}</IonLabel>
+                                        <IonButton slot='end' onClick={e=>{handleVote(index)}}>Vote</IonButton>
+                                    </IonItem>
+                                );
+                            })}
+                </IonList>
+            </IonCard>
             }
             
         </React.Fragment>
