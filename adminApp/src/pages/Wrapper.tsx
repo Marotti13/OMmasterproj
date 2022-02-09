@@ -24,6 +24,7 @@ const NewEvent: React.FC<{
   const [ selected, setSelected ] = useState<any[]>([]);
   const [ date, setDate ] = useState<Date>(new Date());
 
+
   const updateArray = (e:any) =>{
     if(e.detail.value! > -1){
       setCount(parseInt(e.detail.value!));
@@ -39,6 +40,30 @@ const NewEvent: React.FC<{
     try{
       selected[i] = d.ref.path;
     }catch{}
+  }
+
+  const handleDate = (input:any)=>{
+    if(input){
+      let tempdate = date;
+      let inputTempDate = new Date(input.replace(/-/g, '\/'));
+      
+      tempdate.setDate(inputTempDate.getDate());
+      tempdate.setFullYear(inputTempDate.getFullYear());
+      tempdate.setMonth(inputTempDate.getMonth());
+
+      console.log(tempdate);
+
+      setDate(tempdate);
+    }
+  }
+  const handleTime = (input:any)=>{
+    if(input){
+      let tempdate = date;
+      tempdate.setHours(input.substring(0, 2),input.substring(3));
+      console.log(tempdate);
+
+      setDate(tempdate);      
+    }
   }
 
   useEffect(() => {
@@ -57,7 +82,9 @@ const NewEvent: React.FC<{
   <div>
     <IonItem>
       <IonLabel>Event Date</IonLabel>
-      <IonInput type="date" placeholder="Enter Date" ></IonInput>
+      <IonInput onIonChange={e=>handleDate(e.detail.value)} type="date" placeholder="Enter Date" ></IonInput>
+      <IonInput onIonChange={e=>handleTime(e.detail.value)} type="time"  ></IonInput>
+
     </IonItem>
     <IonItem>
       <IonLabel>Party Count</IonLabel>
@@ -159,6 +186,14 @@ const submitNewParty = () => {
             }
             db.collection('teams').add(partyObject).then(snapshot=>{
               db.collection('teams').doc(snapshot.id).collection('interactive').doc('control').set({showID:''});
+              db.collection('teams').doc(snapshot.id).collection('maps').doc('control').set({
+                initialCenter:{
+                  lat:0,
+                  lng:0
+                },
+                markers:[],
+                zoom:0
+              });
               alert("Success!");
               onDismiss();
             });
@@ -299,9 +334,38 @@ const handleSelectParty = (selection:any) =>{
 
 const submitEdit = ()=>{
 
+  console.log(logo);
+
   if(editFlag&& 
-    (selected.data().teamName!=partyName || selected.data().qbName != leaderName || selected.data().record != record)
-  ){
+    (selected.data().teamName!=partyName || selected.data().qbName != leaderName || selected.data().record != record || logo || leaderPicture)){
+
+    if (logo){
+      var logoRef = store.ref(Date.now().toString()+1+logo.name);
+      let logoURL: string;
+
+      logoRef.put(logo).then((snapshot) => {
+        snapshot.ref.getDownloadURL().then(snap =>{
+          db.collection('teams').doc(selected.id).update({
+            logo:snap
+          })
+        })}); 
+      
+    }
+
+    if(leaderPicture){
+      var leaderRef = store.ref(Date.now().toString()+2+leaderPicture.name);
+      let leaderURL: string;
+
+      leaderRef.put(leaderPicture).then((snapshot) => {
+        snapshot.ref.getDownloadURL().then(snap =>{
+          db.collection('teams').doc(selected.id).update({
+            qbPicture:snap
+          })
+        })}); 
+
+   }
+
+
     db.collection('teams').doc(selected.id).update({
       qbName: leaderName,
       record: record,
@@ -527,10 +591,11 @@ const Wrapper: React.FC = () => {
       visitorTeamRef: db.doc(d[1]),
       visitorTeamScore: ""
     };
-    db.collection("temp").doc().set(object).then(() => {
+    db.collection("temp").add(object).then(doc => {
       console.log("Document successfully written!");
+      //console.log("new ID: " + doc.id);
     });
-    //do something if error 
+        
   }
   const handleNewParty = () =>{
     present1();
