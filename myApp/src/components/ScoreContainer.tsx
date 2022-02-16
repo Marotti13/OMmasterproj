@@ -172,13 +172,14 @@ const ScoreContainer: React.FC<{
                   <IonCol > {/* ngIF for if game has started to change html */}
 
                     <IonRow class="score">
-                      9:34
+                      {event?.time}
                     </IonRow >
                     <IonRow class="score">
-                      QTR 1
+                      QTR {" "+event?.qtr}
                     </IonRow>
                     <IonRow class="score">
-                      4th 5
+                      {event?.down+" & " +event?.distance}
+                    
                     </IonRow>                    
                   </IonCol>
 
@@ -198,7 +199,9 @@ const ScoreContainer: React.FC<{
                     {event?.date.toLocaleDateString()}
                   </IonRow>
                   <IonRow class="dateTime">
-                    {event?.date.getHours()+':'+event?.date.getMinutes()}
+                    {/* {event?.date.getHours()+':'+event?.date.getMinutes()} */}
+                    {event?.date.getHours()+':'+(event?.date.getMinutes()<10?'0':'') + event?.date.getMinutes()}
+                    
                   </IonRow>
                 </IonCol>
               )}

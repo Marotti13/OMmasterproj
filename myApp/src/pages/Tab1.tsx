@@ -1,4 +1,4 @@
-import { IonBadge, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonBadge, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonHeader, IonPage, IonText, IonTitle, IonToolbar } from '@ionic/react';
 import './Tab1.css';
 import ViewSurvey from '../components/viewSurvey';
 import db from '../firebaseConfig';
@@ -110,6 +110,17 @@ const Tab1: React.FC<{
         )}
         {control.type == 'survey' && (
           <SurveyContainer docID={control.doc} team={props.team}></SurveyContainer>
+        )}
+        {control.type == '' && (
+          <IonCard>
+          <IonCardHeader>
+            <IonCardTitle>Whoops!</IonCardTitle>
+            <IonCardSubtitle>Nothing to see here</IonCardSubtitle>
+          </IonCardHeader>
+          <IonCardContent>
+            <IonText>We will notify you when something appears!</IonText>
+          </IonCardContent>
+        </IonCard>
         )}
 
 

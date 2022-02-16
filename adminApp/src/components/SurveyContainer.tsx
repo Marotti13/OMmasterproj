@@ -3,7 +3,8 @@ import React from "react";
 import { useEffect, useState } from "react";
 import {db} from "../firebaseConfig";
 import { Pie } from 'react-chartjs-2';
-var Chart = require('chart.js'); 
+import { Chart, ArcElement } from "chart.js";
+Chart.register(ArcElement);
 
 type Survey={
     question:string,

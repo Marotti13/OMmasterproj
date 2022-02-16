@@ -1,9 +1,8 @@
 import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonHeader, IonInput, IonItem, IonLabel, IonPage, IonRadio, IonRadioGroup, IonSelect, IonSelectOption, IonText, IonTitle, IonToolbar, useIonModal } from '@ionic/react';
-import firebase from 'firebase';
-import { options } from 'ionicons/icons';
 import React, { useEffect, useState } from 'react';
-import Twitter from '../components/Twitter';
-import TwitterAdmin from '../components/TwitterAdmin';
+import { Pie } from 'react-chartjs-2';
+import SurveyContainer from '../components/SurveyContainer';
+import SurveyContainerAdmin from '../components/SurveyContainerAdmin';
 import { db } from '../firebaseConfig';
 import ClientTab2 from './clientTab2';
 
@@ -61,6 +60,20 @@ const Tab2: React.FC<{
 
   }
 
+  const handleDelete = (id:string)=>{
+    //check if in use first 
+    if(id==control){
+      console.log('cant do that!');
+      alert("Cannot delete a deployed module!");
+    }else{
+      console.log('you can delete');
+      db.collection('teams').doc(props.team).collection('interactive').doc(id).delete().then(snap=>{
+        alert("Success!");
+      })
+    }
+    // then execute delete
+  }
+
   useEffect(() => {
     db.collection('teams').doc(props.team).collection('interactive').onSnapshot(snap =>{
       let temparr: any =[];
@@ -81,17 +94,12 @@ const Tab2: React.FC<{
 
   return (
     <IonPage>
-      <IonHeader>
+      <IonHeader collapse="condense">
         <IonToolbar>
-          <IonTitle>Tab 1</IonTitle>
-          <IonButton color='warning' slot="end" onClick={toggle}>toggle</IonButton>
+          <IonTitle>Interactive</IonTitle>
+          <IonButton color='warning' slot="end" onClick={toggle}>Toggle</IonButton>
         </IonToolbar>
       </IonHeader>
-        {/* <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Tab 1</IonTitle>
-          </IonToolbar>
-        </IonHeader> */}
         {state == 'admin' ?
         <IonContent fullscreen>
           <IonItem>
@@ -112,15 +120,47 @@ const Tab2: React.FC<{
             
             if survey display percentage of options 
             */}
-            {docs.map((e: any,i:number)=>{ 
-                return(
-                <IonItem>
-                  
-                  {e.type=='survey'?null:null}
-                </IonItem>
-              )
-              })}
           </IonItem>
+            {docs.map((e: any,i:number)=>{ 
+              return(
+                <React.Fragment>
+                  {e.type=='survey'?
+                    <IonCard>
+                      <IonButton onClick={d=>handleDelete(e.id)} size ='small' color='warning'>X</IonButton>
+                      <IonCardHeader>
+                        <IonCardTitle>{e.question}</IonCardTitle>
+                        <IonCardSubtitle>Survey</IonCardSubtitle>
+                      </IonCardHeader>
+                      <IonCardContent>
+                        <SurveyContainerAdmin docID={e.id} team={props.team}></SurveyContainerAdmin>
+                      </IonCardContent>
+                    </IonCard>
+                  :null}
+                  {e.type=='trivia'?
+                    <IonCard>
+                      <IonButton onClick={d=>handleDelete(e.id)} size ='small' color='warning'>X</IonButton>
+                      <IonCardHeader>
+                        <IonCardTitle>{e.question}</IonCardTitle>
+                        <IonCardSubtitle>Trivia</IonCardSubtitle>
+                      </IonCardHeader>
+                      <IonCardContent>
+                        <IonLabel>Correct Names: </IonLabel>
+                        <IonLabel>{e.correctNames.map((e:any,i:number)=>{
+                          if(i==0){
+                            return(e)
+                          }
+                          else{
+                            return(', ' + e)
+                          }
+                          })}</IonLabel>
+                      </IonCardContent>
+                    </IonCard>
+                  :null}
+                </React.Fragment>
+              )
+            
+            })}
+          
         
           <IonButton onClick={e=>present1()}>Edit</IonButton>
           <IonButton onClick={e=>present()}>Create</IonButton>

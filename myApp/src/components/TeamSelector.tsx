@@ -1,4 +1,4 @@
-import { IonCard, IonCol, IonContent, IonGrid, IonImg, IonItem, IonLabel, IonPage, IonRow, IonSelect, IonSelectOption, IonSelectPopover, IonSpinner, IonText, IonTitle} from "@ionic/react"
+import { IonCard, IonCol, IonContent, IonGrid, IonHeader, IonImg, IonItem, IonLabel, IonPage, IonRow, IonSelect, IonSelectOption, IonSelectPopover, IonSpinner, IonText, IonTitle} from "@ionic/react"
 import db from "../firebaseConfig";
 import { useEffect, useState } from "react";
 import './TeamSelector.css'
@@ -83,11 +83,17 @@ const TeamSelector: React.FC<{
   return (
     <IonPage>
       <IonContent>
-        <IonText>
-          <h1>Score Buddy</h1>
-        </IonText>
         <IonImg class='logo' src='https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/American_football.svg/1024px-American_football.svg.png'></IonImg>
-        {loading ? <IonSpinner></IonSpinner> : 
+        <IonText >
+          <h1 className="name">Score Buddy</h1>
+        </IonText>
+        <IonText color="secondary" >
+          <h5 className='sub'>The Sports Companion App</h5>
+        </IonText>
+        <IonText color="secondary">
+          <h6>Select an event and team to get started!</h6>
+        </IonText>
+        {loading ? <IonSpinner class="spinner"></IonSpinner> : 
          events.map((event: myEvent) => { 
           return (
             <IonCard key={event.homeTeamID}> {/** need to get unique key*/}
