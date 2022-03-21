@@ -153,13 +153,15 @@ const TeamSelector: React.FC<{
   return (
     <IonPage>
       <IonContent>
-        <IonText>
-          <h1>Score Buddy</h1>
+      <IonImg class='logo' src='https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/American_football.svg/1024px-American_football.svg.png'></IonImg>
+        <IonText >
+          <h1 className="name">Score Buddy</h1>
         </IonText>
-        <IonImg class='logo' src='https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/American_football.svg/1024px-American_football.svg.png'></IonImg>
+        <div className="center">
         <IonButton onClick={() => props.handleNewEvent()}>Add Event</IonButton>
-        <IonButton onClick={() => props.handleNewParty()}>Add Party</IonButton>
-        <IonButton onClick={() => props.handleEditParty()}>Edit Party</IonButton>
+        <IonButton onClick={() => props.handleNewParty()}>Add Team</IonButton>
+        <IonButton onClick={() => props.handleEditParty()}>Edit Team</IonButton>
+        </div>
         { 
          events.map((event: myEvent) => { 
           return (

@@ -9,7 +9,7 @@ import {
   IonTabs,
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { ellipse, home, square, triangle } from 'ionicons/icons';
+import { ellipse, home, logoTwitter, map, people, pulse, square, triangle } from 'ionicons/icons';
 import Tab1 from './pages/Tab1';
 import Tab2 from './pages/Tab2';
 import Tab3 from './pages/Tab3';
@@ -64,16 +64,16 @@ const App: React.FC<{
         </IonRouterOutlet>
         <IonTabBar slot="bottom" onIonTabsWillChange={handleTabWillChange}>
           <IonTabButton tab="tab1" href="/tab1">
-            <IonIcon icon={triangle} />
-            <IonLabel>Tab 1</IonLabel>
+            <IonIcon icon={logoTwitter} />
+            <IonLabel>Twitter</IonLabel>
           </IonTabButton>
           <IonTabButton tab="tab2" href="/tab2">
-            <IonIcon icon={ellipse} />
-            <IonLabel>Tab 2</IonLabel>
+            <IonIcon icon={people} />
+            <IonLabel>Interactive</IonLabel>
           </IonTabButton>
           <IonTabButton tab="tab3" href="/tab3">
-            <IonIcon icon={square} />
-            <IonLabel>Tab 3</IonLabel>
+            <IonIcon icon={map} />
+            <IonLabel>Map</IonLabel>
           </IonTabButton>
           <IonTabButton tab="home">
             <IonIcon icon={home} />

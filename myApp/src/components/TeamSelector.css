@@ -17,6 +17,11 @@
     text-align: center
 }
 .sub {
+    padding-top: 50px;
     text-align: center;
-    padding-top: 100px;
+}
+
+.sub2{
+    text-align: center;
+    padding-bottom: 25px;
 }

@@ -23,7 +23,7 @@ const Tab1: React.FC<{
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Tab 1</IonTitle>
+          <IonTitle>Twitter</IonTitle>
           <IonButton color='warning' slot="end" onClick={toggle}>toggle</IonButton>
         </IonToolbar>
       </IonHeader>

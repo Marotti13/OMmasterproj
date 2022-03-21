@@ -87,14 +87,14 @@ const NewEvent: React.FC<{
 
     </IonItem>
     <IonItem>
-      <IonLabel>Party Count</IonLabel>
+      <IonLabel>Team Count</IonLabel>
       <IonInput type="number" value={partyCount} placeholder="Enter Number" onIonChange={e => updateArray(e) }></IonInput>
     </IonItem>
 
     {Array.from(Array(partyCount), (e, i) => {
     return (
       <IonItem >
-      <IonLabel>Select Party {i+1}</IonLabel>
+      <IonLabel>Select Team {i+1}</IonLabel>
       <IonSelect value = {selected[i]} onIonChange={e =>{addParty(i,e.detail.value)}}>
         {partys.map(p=>{return(
           <IonSelectOption value={p}>{p.data().teamName}</IonSelectOption>)
@@ -223,7 +223,7 @@ const submitNewParty = () => {
 }
   return(<div>
     <IonItem>
-      <IonLabel>Party Name</IonLabel>
+      <IonLabel>Team Name</IonLabel>
       <IonInput placeholder="Ex: Ole Miss" onIonChange={e=>handleSetPartyName(e.detail.value)}></IonInput>
     </IonItem>
     <IonItem>
@@ -380,7 +380,7 @@ const submitEdit = ()=>{
     })
 
   }else{
-    alert("Select a Party Before Trying to Submit Changes");
+    alert("Select a Team Before Trying to Submit Changes");
   }
 
 }
@@ -449,7 +449,7 @@ useEffect(() => {
     when selected options a bunch of text boxes pop up with all the informtion populated 
     can chnage this info and then send back */}
     <IonItem >
-      <IonLabel>Select Party to Edit</IonLabel>
+      <IonLabel>Select Teams to Edit</IonLabel>
       <IonSelect  onIonChange={e=>handleSelectParty(e.detail.value)}>
         {partys.map(p=>{return(
           <IonSelectOption key={p.id} value={p}>{p.data().teamName}</IonSelectOption>)
@@ -458,7 +458,7 @@ useEffect(() => {
     </IonItem>
 
     <IonItem>
-      <IonLabel>Party Name</IonLabel>
+      <IonLabel>Team Name</IonLabel>
       <IonInput value={partyName} onIonChange={e=>handleSetPartyName(e.detail.value)}></IonInput>
     </IonItem>
     <IonItem>

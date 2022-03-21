@@ -161,9 +161,13 @@ const Tab2: React.FC<{
             
             })}
           
-        
+        <div style= {{
+                textAlign:'center'
+          }}>
           <IonButton onClick={e=>present1()}>Edit</IonButton>
           <IonButton onClick={e=>present()}>Create</IonButton>
+        </div>
+          
         </IonContent>
            
         :
@@ -222,7 +226,8 @@ const NewInter: React.FC<{
         answer:answer,
         options: [...optionArray],
         question: question,
-        type: "trivia"
+        type: "trivia",
+        correctNames:[]
       };
       console.log(JSON.stringify(triviaObject));
       submit(triviaObject);

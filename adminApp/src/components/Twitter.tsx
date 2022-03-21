@@ -110,8 +110,8 @@ const Twitter: React.FC<{
           <Timeline
           dataSource={stateDataSouce}
           options={{
-            //theme: "light",
-            chrome: "noheader, transparent",
+            theme:"dark",
+            chrome: "noheader",
             conversation: "all"
           }} />
     </React.Fragment>

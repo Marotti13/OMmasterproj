@@ -1,4 +1,4 @@
-import { IonCard, IonCol, IonContent, IonGrid, IonHeader, IonImg, IonItem, IonLabel, IonPage, IonRow, IonSelect, IonSelectOption, IonSelectPopover, IonSpinner, IonText, IonTitle} from "@ionic/react"
+import { IonCard, IonCardContent, IonCol, IonContent, IonGrid, IonHeader, IonImg, IonItem, IonLabel, IonPage, IonRow, IonSelect, IonSelectOption, IonSelectPopover, IonSpinner, IonText, IonTitle} from "@ionic/react"
 import db from "../firebaseConfig";
 import { useEffect, useState } from "react";
 import './TeamSelector.css'
@@ -89,24 +89,26 @@ const TeamSelector: React.FC<{
         </IonText>
         <IonText color="secondary" >
           <h5 className='sub'>The Sports Companion App</h5>
-        </IonText>
-        <IonText color="secondary">
-          <h6>Select an event and team to get started!</h6>
+          <h6 className='sub2'>Select an event and team to get started!</h6>
         </IonText>
         {loading ? <IonSpinner class="spinner"></IonSpinner> : 
-         events.map((event: myEvent) => { 
+        <IonCard > {/** need to get unique key*/}
+        <IonCardContent>  
+         {events.map((event: myEvent) => { 
           return (
-            <IonCard key={event.homeTeamID}> {/** need to get unique key*/}
-              <IonItem>
+            
+              <IonItem key={event.homeTeamID}>
                 <IonLabel>{event.visitorTeamName + ' vs ' + event.homeTeamName}</IonLabel>
                 <IonSelect placeholder="Select Team" onIonChange={e=>props.onSelection(e.detail.value, event.id)}>
                 <IonSelectOption key={event.visitorTeamID} value={event.visitorTeamID}>{event.visitorTeamName}</IonSelectOption>
                   <IonSelectOption key={event.homeTeamID} value={event.homeTeamID}>{event.homeTeamName}</IonSelectOption>
                 </IonSelect>
               </IonItem>
-            </IonCard>
+              
           );
         })}
+        </IonCardContent>
+            </IonCard>}
       </IonContent>
     </IonPage>
     
