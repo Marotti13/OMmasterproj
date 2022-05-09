@@ -1,28 +1,33 @@
-import { IonContent, IonItem, IonLabel, IonSelect, IonSelectOption } from '@ionic/react';
+import { IonContent, IonHeader, IonItem, IonLabel, IonPage, IonSelect, IonSelectOption, IonTitle, IonToolbar } from '@ionic/react';
 import { Timeline } from 'react-twitter-widgets'
 import db from '../firebaseConfig';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import firebase from 'firebase';
+import { Socket } from 'net';
 
-const Twitter: React.FC = () => {
+const Twitter: React.FC<{
+    team:string; 
+  }> = props => {
 
-
-  //scroll to top of page when using tab button (like twitter) for all tabs
+  //get team doc id from prop. then subscribe to feeds from that doc id -> fetchDocs method 
+  //try for changing feed and if doesnt work reset to default and then throw alert error?
 
   const [ feeds, setFeeds ] = useState<any>([]);
   const [ stateDataSouce, setStateDataSource ] = useState<any>({
     sourceType: 'profile',
-    screenName: 'CNNPolitics'
+    screenName: 'CNN'
   });
 
 
   const fetchDocs=async()=>{
-    db.collection("feeds")
+    //db.collection("feeds") --------this is a chnage have not tested
+    db.collection("teams").doc(props.team).collection('feeds')
         .onSnapshot((e) => {
 
           let tempArrray: firebase.firestore.DocumentData[] = [];
 
           e.docs.map(doc => {
+            console.log(doc.data());
             //do something on first iteration, check to make sure if its populated
             tempArrray.push(doc.data());
           });
@@ -62,7 +67,6 @@ const Twitter: React.FC = () => {
   const handleSelection = (e: any) => {
     let value = e.detail.value;
     let feedSelection = feeds.find((x: { name: string; }) => x.name === value); //searches feeds for matching name and gets data 
-    console.log(feedSelection);
 
     if(feedSelection.type === 'list') {
       let dataSource ={
@@ -85,7 +89,6 @@ const Twitter: React.FC = () => {
       console.log("error");
       return;
     }
-   
 
   } 
   
@@ -94,26 +97,37 @@ const Twitter: React.FC = () => {
   }, [])
   
   
-  return( // ion slect needs work, doesnt work right 
+  return( 
+    <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>Twitter</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonHeader>
+        {/* <IonToolbar> */}
+          <IonItem>
+            <IonLabel>Twitter Feed</IonLabel>
+            <IonSelect placeholder={stateDataSouce.screenName} onIonChange={e => handleSelection(e)}>
+              {feeds.map((element: any) => {
+                return (<IonSelectOption key={element.name}>{element.name}</IonSelectOption>);
+              })}
+            </IonSelect>
+          </IonItem>
+        {/* </IonToolbar> */}
+      </IonHeader>
       <IonContent>
-        <IonItem>
-          <IonLabel>Twitter Feed</IonLabel>
-          <IonSelect placeholder={stateDataSouce.screenName} onIonChange={e => handleSelection(e)}> 
-            {feeds.map((element: any) => { 
-              return (<IonSelectOption key={element.name}>{element.name}</IonSelectOption>)
-              })
-            }
-          </IonSelect>
-        </IonItem>
-          <Timeline 
-            dataSource={stateDataSouce}
-            options={{
-                theme:"dark",
-                chrome:"noheader, transparent",
-                conversation:"all"
-            }}
-          />
+        
+        <Timeline
+          dataSource={stateDataSouce}
+          options={{
+            theme:"dark",
+            chrome: "noheader",
+            conversation: "all"
+          }} />
       </IonContent>
+    </IonPage>
+      
 
 
   );

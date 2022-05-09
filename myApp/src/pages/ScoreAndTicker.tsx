@@ -5,7 +5,9 @@ import TickerContainer from "../components/TickerContainer";
 
 
 
-const ScoreAndTicker: React.FC= () => {
+const ScoreAndTicker: React.FC<{
+  event:string;
+}> = props => {
 
 
   const [ select, setSelect ] = useState<string>('score');
@@ -13,11 +15,9 @@ const ScoreAndTicker: React.FC= () => {
   const inputChangeHandler = (event: CustomEvent) => {
     //props.onSelectedValue(event.detail.value);
     setSelect(event.detail.value);
-    console.log(select);
 }
   
   useEffect(() => {
-
   }, [])
 
 
@@ -49,7 +49,7 @@ const ScoreAndTicker: React.FC= () => {
           </IonRow>
           <IonRow>
             <IonCol>
-              {select === 'ticker' ? <TickerContainer></TickerContainer> : <ScoreContainer></ScoreContainer>}
+              {select === 'ticker' ? <TickerContainer></TickerContainer> : <ScoreContainer event={props.event}></ScoreContainer> /**this is the reason for the reloading, if you care you can try to find a new way */} 
             </IonCol>
           </IonRow>
         </IonGrid>

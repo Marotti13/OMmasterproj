@@ -1,36 +1,42 @@
-import { IonCard, IonCol, IonHeader, IonImg, IonRow, IonText, } from "@ionic/react";
+import { IonAvatar, IonCard, IonCol, IonHeader, IonImg, IonRow, IonText, } from "@ionic/react";
 import { useEffect, useState } from "react";
 import './ScoreAndTicker.css';
 import db from '../firebaseConfig';
 import React from "react";
 
+type Event ={
+  date: Date,
+  htPassingYards: string,
+  htScore: string,
+  vtPassingYards: string,
+  vtScore: string,
+  time:string,
+  qtr:string,
+  down:string,
+  distance:string
+  //other event stats related info
+  /**
+   * 
+   * need to add score
+   */
+}
 
-const ScoreContainer: React.FC= () => {
+type Team = {
+  QBPictre: string,
+  logo: string,
+  QBName: string,
+  TeamName:string,
+  record:string
+}
 
-  const [ game, setGame ] = useState<string>("16q3qZGMrLLtVK3Wj1Ui");  //hardcoded which event to subscribe to,EVENTUALY this will be a varibale passed to the componenet as a prop
-  const [ event, setEvent ] = useState<any>({   //the event details that are set from an api once a specific game has been selected
-    homeTeam:'',
-    visitorTeam:'',
-    homeTeamPicture:'',
-    visitorTeamPicture:'',
-    homeTeamScore:'',
-    visitorTeamScore:'',
-    quarter:"", //what qtr it is 
-    timeLeft:"", //time left in qtr
-    homeTeamRecord:'',
-    visitorTeamRecord:'',
-    homeTeamQBName:'',
-    visitorTeamQBName:'',
-    homeTeamQBPicture:'',
-    visitorTeamQBPicture:'',
-    homeTeamQBPassing:'',
-    visitorTeamQBPassing:''
 
-    //need to figure out time stuff
-    //stats for each team's QB
-    //passing yards, completions, interceptions
+const ScoreContainer: React.FC<{
+  event:string;
+  }> = props => {
 
-  });
+  const [ home, setHome ] = useState<Team>();
+  const [ visitor, setVisitor ] = useState<Team>();
+  const [ event, setEvent ] = useState<Event>();
 
 
   /**
@@ -52,26 +58,15 @@ const ScoreContainer: React.FC= () => {
    *      game is about 3 hours - 4 max. so 240 min - can update scores every minute for a game 
    * 
    * might need to create a server like application that polls an api and sends it to firebase which in turn sends it to users 
+   * 
+   * 
+   * 
+   * TODO:
+   * make live timing and score interface - just front end 
+   * qb pictures 
+   * format time stuff 
+   * score notification?
    */
-   
-
-   const selectGame = () => {
-    /**
-     * once game has been slected this method will populate page with score information ---- might need another method
-     * 
-     *  willl be able to switch games with a dropdown???
-     * 
-     * after this fetch score is looped with a snpashot that keeps things updated 
-     * 
-     *  *********this might be done upon entire app startup so the entire expereince is tailored to a specific team******
-     * 
-     */
-   }
-
-   
-
-   
-
   
 
    const fetchEventDetails = async() =>{
@@ -84,89 +79,145 @@ const ScoreContainer: React.FC= () => {
      */
     
 
-     db.collection("games").doc(game)//will use prop later but hardcoded for now in state var
+     db.collection("events").doc(props.event)//will use prop later but hardcoded for now in state var
      .onSnapshot((doc) => {
 
       if(!doc.exists){ //prevents an error if survey gets deleted - snapshot doesnt exist but still triggers fetch
-        return
-    }
-       console.log(doc.data()!.homeTeam);
-       setEvent(doc.data()); //this could not work but we will see and its prob not secure
+        console.log("does not exist");
+        
+      }else{
 
+        doc.data()!.homeTeamRef.get().then((team:any) =>{ //do this in its own method so doesnt have toi be called every update!
+          let homeTeam:Team ={
+            QBPictre: team.data()!.qbPicture,
+            logo: team.data()!.logo,
+            QBName: team.data()!.qbName,
+            TeamName: team.data()!.teamName,
+            record: team.data()!.record
+          }
+          setHome(homeTeam);
+         });
+
+
+         doc.data()!.visitorTeamRef.get().then((team:any) =>{ //do this in its own method so doesnt have toi be called every update!
+          let visitorTeam:Team ={
+            QBPictre: team.data()!.qbPicture,
+            logo: team.data()!.logo,
+            QBName: team.data()!.qbName,
+            TeamName: team.data()!.teamName,
+            record: team.data()!.record
+          }
+          setVisitor(visitorTeam);
+         });
+
+
+        let event:Event = {
+          date: doc.data()!.eventDate.toDate(),
+          htPassingYards: doc.data()!.homeTeamPassingYards,
+          htScore: doc.data()!.homeTeamScore,
+          vtPassingYards: doc.data()!.visitorTeamPassingYards,
+          vtScore: doc.data()!.visitorTeamScore,
+          time: doc.data()!.time,
+          qtr: doc.data()!.qtr,
+          down: doc.data()!.down,
+          distance: doc.data()!.distance
+        }
+        console.log(event);
+        setEvent(event);
+
+
+      }
+       
          
          
 
      });
-
    }
 
    useEffect(() => {
+     console.log("event "+props.event);
     fetchEventDetails(); //the snapshot subscribing to the game 
   }, [])
 
 
     return (
       
-      /**
-       * drop down nav bar thing
-       *  options: ticker, score  -will set score for every app the same for now but users will have options later 
-       * have another componenet that acts as a wrapper for the ticker and the score card and will toggle display for both
-       * 
-       * 
-       * 
-       * countdown until event??
-       * 
-       * 
-       */
-      
       <React.Fragment>
         
           <IonCard>
             <IonRow class="ion-align-items-center">
-              <IonCol>
                 <IonCol>
-                  <IonRow>
-                  <IonHeader class="ion-text-center">{event.visitorTeam}</IonHeader>
+                  <IonRow class="nameRecord">
+                    {visitor?.TeamName}
                   </IonRow>
-                  <IonRow>
-                    <IonHeader class="ion-text-center">{event.visitorTeamRecord}</IonHeader>
+                  <IonRow class="nameRecord">
+                    {visitor?.record}
                   </IonRow>
-                </IonCol>
               </IonCol>
 
               <IonCol>
-                <IonImg src={event.visitorTeamPicture}></IonImg> {/* need a place holder image either through css or ngIF image is null */}
+                <IonImg src={visitor?.logo}></IonImg> {/* need a place holder image either through css or ngIF image is null */}
               </IonCol>
-
-              {event.quarter != '' && ( //if the game has started show something else instead 
-                <p>GAME HAS STARTED</p>
-              )}
-
-              {event.quarter == '' && ( //if the game has started show something else instead 
-                <IonCol  class="ion-text-center"> {/* ngIF for if game has started to change html */}
-                  <IonText >10/20</IonText><br></br>
-                  <IonText>TBA</IonText>
-                </IonCol>
-              )}
 
               
 
-              <IonCol>
-              <IonImg src={event.homeTeamPicture}></IonImg>
+              {event?.qtr != "" && ( //IF QTR HAS STARTED THEN SHOW
 
+                <><IonCol>
+                    <IonRow class='score'>
+                    <h2>{event?.vtScore}</h2>
+                    </IonRow>
+                  </IonCol>
 
-              </IonCol>
+                  <IonCol > {/* ngIF for if game has started to change html */}
 
-              <IonCol>
-              <IonCol>
-                  <IonRow>
-                    <IonHeader class="ion-text-center">{event.homeTeam}</IonHeader>
+                    <IonRow class="score">
+                      {event?.time}
+                    </IonRow >
+                    <IonRow class="score">
+                      QTR {" "+event?.qtr}
+                    </IonRow>
+                    <IonRow class="score">
+                      {event?.down+" & " +event?.distance}
+                    
+                    </IonRow>                    
+                  </IonCol>
+
+                <IonCol >
+                  <IonRow class='score'>
+                   <h2>{event?.htScore}</h2>
+                 </IonRow>
+                </IonCol>
+
+                </>
+              )}
+
+              {event?.qtr == "" &&  ( //CHECK IF QTR EXISTS TO TELL IF GAME HAS STARTED 
+                <IonCol> {/* ngIF for if game has started to change html */}
+                  {/* {event?.date.toUTCString()} */}
+                  <IonRow class="dateTime">
+                    {event?.date.toLocaleDateString()}
                   </IonRow>
-                  <IonRow>
-                    <IonHeader class="ion-text-center">{event.homeTeamRecord}</IonHeader>
+                  <IonRow class="dateTime">
+                    {/* {event?.date.getHours()+':'+event?.date.getMinutes()} */}
+                    {event?.date.getHours()+':'+(event?.date.getMinutes()<10?'0':'') + event?.date.getMinutes()}
+                    
                   </IonRow>
                 </IonCol>
+              )}
+
+              <IonCol>
+                <IonImg src={home?.logo}></IonImg>
               </IonCol>
+
+              <IonCol >
+                  <IonRow class='nameRecord'>
+                    {home?.TeamName}
+                  </IonRow>
+                  <IonRow class='nameRecord'>
+                    {home?.record}
+                  </IonRow>
+                </IonCol>
             </IonRow>
           </IonCard>
 
@@ -174,20 +225,35 @@ const ScoreContainer: React.FC= () => {
           
             <IonRow> 
               <IonCol>
-                <IonImg class='qb' src="https://cdn2.iconfinder.com/data/icons/rcons-user/32/male-shadow-fill-circle-512.png"></IonImg> {/* might save picture on app client to be used as a placeholder */}
+                <IonRow class='qb'>
+                  <IonAvatar >
+                    <IonImg src={visitor?.QBPictre}></IonImg> {/* might save picture on app client to be used as a placeholder */}
+                  </IonAvatar>
+                </IonRow>
+                <IonRow class='qb'>
+                  {visitor?.QBName}
+                </IonRow>
               </IonCol>
 
-              <IonCol class='ion-text-center'>
-                <p>Passing Yards</p>
-                <p>{event.homeTeamQBPassing}</p>
+              <IonCol class="ion-text-center">
+                <h6>{event?.htPassingYards}</h6>
               </IonCol>
               <IonCol class="ion-text-center">
-                <p>Passing Yards</p>
-                <p>{event.visitorTeamQBPassing}</p>
+                <h6>Passing Yards</h6>
+              </IonCol>
+              <IonCol class="ion-text-center">
+                <h6>{event?.vtPassingYards}</h6>
               </IonCol>
 
               <IonCol >
-                <IonImg class='qb1' src="https://cdn2.iconfinder.com/data/icons/rcons-user/32/male-shadow-fill-circle-512.png"></IonImg>
+                <IonRow class='qb1'>
+                  <IonAvatar >
+                    <IonImg src={home?.QBPictre}></IonImg>
+                  </IonAvatar>
+                </IonRow>
+                <IonRow class='qb1'>
+                  {home?.QBName}
+                </IonRow>
               </IonCol>
             </IonRow>
             

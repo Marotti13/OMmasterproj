@@ -1,0 +1,7 @@
+{
+  "name": "adminApp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}

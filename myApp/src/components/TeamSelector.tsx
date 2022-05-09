@@ -1,4 +1,4 @@
-import { IonCard, IonCol, IonContent, IonGrid, IonImg, IonItem, IonLabel, IonPage, IonRow, IonSelect, IonSelectOption, IonSelectPopover, IonSpinner, IonText, IonTitle} from "@ionic/react"
+import { IonCard, IonCardContent, IonCol, IonContent, IonGrid, IonHeader, IonImg, IonItem, IonLabel, IonPage, IonRow, IonSelect, IonSelectOption, IonSelectPopover, IonSpinner, IonText, IonTitle} from "@ionic/react"
 import db from "../firebaseConfig";
 import { useEffect, useState } from "react";
 import './TeamSelector.css'
@@ -15,10 +15,11 @@ type myEvent = {
   homeTeamID: string;
   visitorTeamName: string;
   visitorTeamID: string;
+  id: string;
 }
 
 const TeamSelector: React.FC<{
-  onSelection: (selection:string) => void;
+  onSelection: (team:string,event:string) => void;
 }> = props => {
 
   const [ events, addEvents ] = useState<myEvent[]>([]);
@@ -52,7 +53,8 @@ const TeamSelector: React.FC<{
                 homeTeamName: ht,
                 homeTeamID: htID,
                 visitorTeamName: vt,
-                visitorTeamID: team.id
+                visitorTeamID: team.id,
+                id: doc.id
               }
       
               console.log(event);
@@ -81,24 +83,32 @@ const TeamSelector: React.FC<{
   return (
     <IonPage>
       <IonContent>
-        <IonText>
-          <h1>Score Buddy</h1>
-        </IonText>
         <IonImg class='logo' src='https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/American_football.svg/1024px-American_football.svg.png'></IonImg>
-        {loading ? <IonSpinner></IonSpinner> : 
-         events.map((event: myEvent) => { 
+        <IonText >
+          <h1 className="name">Score Buddy</h1>
+        </IonText>
+        <IonText color="secondary" >
+          <h5 className='sub'>The Sports Companion App</h5>
+          <h6 className='sub2'>Select an event and team to get started!</h6>
+        </IonText>
+        {loading ? <IonSpinner class="spinner"></IonSpinner> : 
+        <IonCard > {/** need to get unique key*/}
+        <IonCardContent>  
+         {events.map((event: myEvent) => { 
           return (
-            <IonCard key={event.homeTeamID}> {/** need to get unique key*/}
-              <IonItem>
+            
+              <IonItem key={event.homeTeamID}>
                 <IonLabel>{event.visitorTeamName + ' vs ' + event.homeTeamName}</IonLabel>
-                <IonSelect value={'test value'} placeholder="Select Team" onIonChange={e=>props.onSelection(e.detail.value)}>
+                <IonSelect placeholder="Select Team" onIonChange={e=>props.onSelection(e.detail.value, event.id)}>
+                <IonSelectOption key={event.visitorTeamID} value={event.visitorTeamID}>{event.visitorTeamName}</IonSelectOption>
                   <IonSelectOption key={event.homeTeamID} value={event.homeTeamID}>{event.homeTeamName}</IonSelectOption>
-                  <IonSelectOption key={event.visitorTeamID} value={event.visitorTeamID}>{event.visitorTeamName}</IonSelectOption>
                 </IonSelect>
               </IonItem>
-            </IonCard>
+              
           );
         })}
+        </IonCardContent>
+            </IonCard>}
       </IonContent>
     </IonPage>
     

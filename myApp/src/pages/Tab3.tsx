@@ -10,7 +10,6 @@ import React from 'react';
 import { EROFS } from 'constants';
 import InputControls from '../components/InputControls';
 import Twitter from '../components/Twitter';
-import TwitterAdmin from '../components/TwitterAdmin';
 
 const Tab3: React.FC = () => {
   const [ calculatedBMI, setCalculatedBMI ] = useState<number>();
@@ -96,7 +95,6 @@ const Tab3: React.FC = () => {
               <BmiResults result={calculatedBMI}/>
             )}
           </IonGrid>
-          <TwitterAdmin></TwitterAdmin>
       </IonContent>
     </IonPage>
     </React.Fragment>
