@@ -150,7 +150,7 @@ function docMenu(){
             }
           }
 
-        },1000) //every minute
+        },30000) //every minute
         
       });
     }
